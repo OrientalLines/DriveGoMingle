@@ -1,21 +1,22 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
+	import { goto } from '$app/navigation';
 	let currentSlide = 0;
 	let interval: ReturnType<typeof setInterval>;
 
 	const slides = [
 		{
-			title: 'Авто\nЛюбители\nСоединяйтесь',
-			image: null
+			title: 'Авто\nЛюбители\nОбщайтесь',
+			icon: 'directions_car'
 		},
 		{
 			title: 'Дорога\nСближает\nЛюдей',
-			image: null
+			icon: 'groups'
 		},
 		{
-			title: 'Создавай\nМаршруты\nВстречай Друзей',
-			image: null
+			title: 'Создавай\nВстречи\nВстречай\nДрузей',
+			icon: 'people'
 		}
 	];
 
@@ -24,33 +25,44 @@
 	}
 
 	onMount(() => {
-		interval = setInterval(nextSlide, 3000); // Switch slides every 3 seconds
+		interval = setInterval(nextSlide, 5000); // Switch slides every 5 seconds
 	});
 
 	onDestroy(() => {
 		if (interval) clearInterval(interval);
 	});
+
+	function handleEmailAuth() {
+		goto('/auth/login');
+	}
 </script>
 
 <div class="flex min-h-screen flex-col justify-between px-8 py-12">
-	<div class="mb-auto flex-1">
-		<!-- Text content moved here -->
-		<div class="space-y-1 pt-12">
-			{#each slides[currentSlide].title.split('\n') as line}
-				<h1 class="text-5xl font-bold leading-tight tracking-tight text-white">{line}</h1>
-			{/each}
+	<div class="mb-auto flex flex-1 items-center justify-center text-center">
+		<div class="relative space-y-1">
+			<!-- Icon with enhanced animation -->
+			<div class="mb-8 transform transition-all duration-500">
+				<span
+					class="material-icons text-7xl text-white opacity-90 transition-transform hover:scale-110"
+				>
+					{slides[currentSlide].icon}
+				</span>
+			</div>
 
-			{#if slides[currentSlide].image}
-				<div class="mt-6">
-					<img src="{$page.data.assetPath}/{slides[currentSlide].image}.png" alt="Illustration" />
-				</div>
-			{/if}
+			<!-- Text with staggered animations -->
+			<div class="relative">
+				{#each slides[currentSlide].title.split('\n') as line, i}
+					<h1 class="text-5xl font-bold leading-tight tracking-tight text-white">
+						{line}
+					</h1>
+				{/each}
+			</div>
 		</div>
 	</div>
 
 	<div class="w-full space-y-8">
 		<!-- Dots indicator -->
-		<div class="flex space-x-3">
+		<div class="flex justify-center space-x-3">
 			{#each slides as _, i}
 				<div
 					class="h-2.5 w-2.5 rounded-full transition-colors duration-200 {i === currentSlide
@@ -63,6 +75,7 @@
 		<!-- Buttons -->
 		<div class="space-y-4">
 			<button
+				on:click={handleEmailAuth}
 				class="bg-primary flex w-full items-center justify-center space-x-3 rounded-xl py-4 font-medium text-white"
 			>
 				<span class="material-icons">email</span>
@@ -82,4 +95,3 @@
 		</div>
 	</div>
 </div>
-    
