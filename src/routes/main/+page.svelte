@@ -1,29 +1,35 @@
 <script lang="ts">
-  import NavBar from '../../components/NavBar.svelte';
+	import NavBar from '../../components/NavBar.svelte';
+	import Feed from '../feed/+page.svelte';
+
+	let currentView: 'feed' | 'profile' | 'chats' = 'feed';
 </script>
 
-<div class="min-h-screen bg-[#1A1B1F] text-white pb-20">
-  <!-- Header -->
-  <header class="p-4 flex items-center justify-between">
-    <h1 class="text-xl font-semibold">Kim Benson 🔥</h1>
-    <button class="p-2">
-      <span class="material-icons">notifications_none</span>
-    </button>
-  </header>
+<div class="min-h-screen pb-20 text-white">
+	<!-- Main Content -->
+	<main class="p-4">
+		{#if currentView === 'feed'}
+			<Feed />
+		{:else if currentView === 'profile'}
+			<!-- TODO: Create and import Profile component -->
+			<div class="space-y-4">
+				<div class="rounded-lg bg-[#25262B] p-4">
+					<h2>Profile Information</h2>
+					<p class="text-gray-400">Profile content goes here...</p>
+				</div>
+			</div>
+		{:else}
+			<!-- TODO: Create and import Chats component -->
+			<div class="space-y-4">
+				{#each Array(3) as _, i}
+					<div class="rounded-lg bg-[#25262B] p-4">
+						<h2>Chat {i + 1}</h2>
+						<p class="text-gray-400">Last message preview...</p>
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</main>
 
-  <!-- Main Content -->
-  <main class="p-4">
-    <!-- Add your main content here -->
-    <div class="space-y-4">
-      <!-- Example content cards -->
-      {#each Array(5) as _, i}
-        <div class="bg-[#25262B] rounded-lg p-4">
-          <h2>Content Card {i + 1}</h2>
-          <p class="text-gray-400">Sample content goes here...</p>
-        </div>
-      {/each}
-    </div>
-  </main>
-
-  <NavBar />
+	<NavBar {currentView} onViewChange={(view) => (currentView = view)} />
 </div>
