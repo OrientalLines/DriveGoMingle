@@ -23,13 +23,21 @@
 	} as const;
 
 	// Type the mock data status
-	const items: { title: string; status: Status; progress: string }[] = [
-		{ title: 'Cool meetup', status: 'В ПРОЦЕССЕ', progress: '13 /15' },
-		{ title: 'Ferrari Meet', status: 'В ПРОЦЕССЕ', progress: '9/20' },
-		{ title: 'Tsunami Picnic', status: 'В ПЛАНЕ', progress: '5/1000' },
-		{ title: 'Swamp Rust', status: 'В ПЛАНЕ', progress: '18/50' },
-		{ title: 'Evening Meet', status: 'В ПРОЦЕССЕ', progress: '10/20' }
+	const items: { id: number; title: string; status: Status; progress: string }[] = [
+		{ id: 1, title: 'Cool meetup', status: 'В ПРОЦЕССЕ', progress: '13 /15' },
+		{ id: 2, title: 'Ferrari Meet', status: 'В ПРОЦЕССЕ', progress: '9/20' },
+		{ id: 3, title: 'Tsunami Picnic', status: 'В ПЛАНЕ', progress: '5/1000' },
+		{ id: 4, title: 'Swamp Rust', status: 'В ПЛАНЕ', progress: '18/50' },
+		{ id: 5, title: 'Evening Meet', status: 'В ПРОЦЕССЕ', progress: '10/20' }
 	];
+
+	// Add loading state
+	let isLoading = true;
+
+	// Simulate loading for demo purposes
+	setTimeout(() => {
+		isLoading = false;
+	}, 1500);
 </script>
 
 <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
@@ -58,50 +66,76 @@
 	</div>
 
 	<div class="space-y-3">
-		{#each items as item}
-			<div class="block rounded-lg bg-backgroundSecondary/50 p-4 transition-all">
-				<div class="mb-3 flex items-center justify-between">
-					<div class="flex items-center gap-4">
-						<div
-							class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#A06AF9] transition-transform group-hover:scale-105"
-						>
-							<SquareArrowOutUpRight class="h-6 w-6 text-white" />
+		{#if isLoading}
+			{#each Array(3) as _}
+				<div class="block rounded-lg bg-backgroundSecondary/50 p-4 animate-pulse">
+					<div class="mb-3 flex items-center justify-between">
+						<div class="flex items-center gap-4">
+							<div class="h-12 w-12 rounded-xl bg-gray-700"></div>
+							<div>
+								<div class="h-5 w-32 rounded bg-gray-700"></div>
+								<div class="mt-2 h-4 w-20 rounded bg-gray-700"></div>
+							</div>
 						</div>
-						<div>
-							<h2 class="text-lg font-semibold text-white transition-colors hover:text-blue-400">
-								{item.title}
-							</h2>
-							<p class="text-sm text-[#5E6272]">Публичный</p>
+						<div class="flex flex-col items-end gap-2.5">
+							<div class="h-7 w-20 rounded-full bg-gray-700"></div>
+							<div class="h-7 w-24 rounded-full bg-gray-700"></div>
 						</div>
 					</div>
-					<div class="flex flex-col items-end gap-2.5">
-						<span
-							class="inline-flex items-center rounded-full bg-[#A06AF9] px-4 py-1.5 text-sm font-bold text-white"
-						>
-							{item.progress}
-						</span>
-						<span
-							class="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-bold text-white/90 shadow-sm"
-							style="background-color: {statusColorMap[
-								item.status
-							]}; text-shadow: 0 1px 2px rgba(0,0,0,0.2);"
-						>
-							{item.status}
-						</span>
-					</div>
+					<div class="h-1.5 overflow-hidden rounded-full bg-gray-700"></div>
 				</div>
-				<div class="h-1.5 overflow-hidden rounded-full bg-white/10">
+			{/each}
+		{:else}
+			{#each items as item}
+				<a href="/event/{item.id}" class="block">
 					<div
-						class="h-full rounded-full transition-all"
-						style="
-							width: {(parseInt(item.progress.split('/')[0]) / parseInt(item.progress.split('/')[1])) * 100}%;
-							background: {getProgressGradient(
-							(parseInt(item.progress.split('/')[0]) / parseInt(item.progress.split('/')[1])) * 100
-						)};
-						"
-					></div>
-				</div>
-			</div>
-		{/each}
+						class="block rounded-lg bg-backgroundSecondary/50 p-4 transition-all hover:bg-backgroundSecondary/70"
+					>
+						<div class="mb-3 flex items-center justify-between">
+							<div class="flex items-center gap-4">
+								<div
+									class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#A06AF9] transition-transform group-hover:scale-105"
+								>
+									<SquareArrowOutUpRight class="h-6 w-6 text-white" />
+								</div>
+								<div>
+									<h2 class="text-lg font-semibold text-white transition-colors hover:text-blue-400">
+										{item.title}
+									</h2>
+									<p class="text-sm text-diactivated">Публичный</p>
+								</div>
+							</div>
+							<div class="flex flex-col items-end gap-2.5">
+								<span
+									class="inline-flex items-center rounded-full bg-[#A06AF9] px-4 py-1.5 text-sm font-bold text-white"
+								>
+									{item.progress}
+								</span>
+								<span
+									class="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-bold text-white/90 shadow-sm"
+									style="background-color: {statusColorMap[
+										item.status
+									]}; text-shadow: 0 1px 2px rgba(0,0,0,0.2);"
+								>
+									{item.status}
+								</span>
+							</div>
+						</div>
+						<div class="h-1.5 overflow-hidden rounded-full bg-white/10">
+							<div
+								class="h-full rounded-full transition-all"
+								style="
+									width: {(parseInt(item.progress.split('/')[0]) / parseInt(item.progress.split('/')[1])) * 100}%;
+									background: {getProgressGradient(
+									(parseInt(item.progress.split('/')[0]) / parseInt(item.progress.split('/')[1])) *
+										100
+									)};
+								"
+							></div>
+						</div>
+					</div>
+				</a>
+			{/each}
+		{/if}
 	</div>
 </div>
