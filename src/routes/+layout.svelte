@@ -1,10 +1,15 @@
 <script lang="ts">
 	import '../app.css';
+	import { fade } from 'svelte/transition';
 	let { children } = $props();
 </script>
 
 <div class="bg-dark-gradient min-h-screen">
-    {@render children()}
+    {#key children}
+        <div in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
+            {@render children()}
+        </div>
+    {/key}
 </div>
 
 <style>

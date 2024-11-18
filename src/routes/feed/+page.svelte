@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { SquareArrowOutUpRight } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 	type Status = keyof typeof statusColorMap;
 
 	function getProgressGradient(percentage: number) {
@@ -40,10 +41,14 @@
 	}, 1500);
 </script>
 
-<div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+<div 
+	class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8"
+	in:fly={{ x: 100, duration: 400, delay: 300 }}
+	out:fly={{ x: -100, duration: 400 }}
+>
 	<h1 class="text-center text-2xl font-bold text-white">Лента</h1>
 	<div class="flex items-center justify-center">
-		<div class="mb-2 inline-flex w-full max-w-md rounded-full bg-backgroundSecondary/50">
+		<div class="mb-2 inline-flex w-full max-w-md rounded-full bg-background-secondary/50">
 			<button
 				class="flex-1 px-4 py-2.5 text-sm font-bold {activeTab === 'upcoming'
 					? 'bg-primary text-white'
@@ -68,7 +73,7 @@
 	<div class="space-y-3">
 		{#if isLoading}
 			{#each Array(3) as _}
-				<div class="block rounded-lg bg-backgroundSecondary/50 p-4 animate-pulse">
+				<div class="block rounded-lg bg-background-secondary/50 p-4 animate-pulse">
 					<div class="mb-3 flex items-center justify-between">
 						<div class="flex items-center gap-4">
 							<div class="h-12 w-12 rounded-xl bg-gray-700"></div>
@@ -89,7 +94,7 @@
 			{#each items as item}
 				<a href="/event/{item.id}" class="block">
 					<div
-						class="block rounded-lg bg-backgroundSecondary/50 p-4 transition-all hover:bg-backgroundSecondary/70"
+						class="block rounded-lg bg-background-secondary/50 p-4 transition-all hover:bg-background-secondary/70"
 					>
 						<div class="mb-3 flex items-center justify-between">
 							<div class="flex items-center gap-4">

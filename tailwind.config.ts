@@ -15,8 +15,9 @@ export default {
 				primary: '#246BFD',
 				secondary: '#C25FFF',
 				background: '#181A20',
-				backgroundSecondary: '#262A34',
-				diactivated: '#5E6272'
+				'background-secondary': '#262A34',
+				diactivated: '#5E6272',
+				'light-green': '#A5F59C'
 			},
 			backgroundImage: {
 				'primary-gradient': 'linear-gradient(90deg, #246BFD 0%, #C25FFF 100%)', // Using brand colors

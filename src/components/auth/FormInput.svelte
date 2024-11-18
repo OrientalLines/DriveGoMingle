@@ -12,7 +12,7 @@
     {type}
     {id}
     bind:value
-    class="form-input w-full rounded-xl border-none bg-backgroundSecondary p-4 text-white placeholder-gray-500 focus:ring-2 focus:ring-primary"
+    class="form-input w-full rounded-xl border-none bg-background-secondary p-4 text-white placeholder-gray-500 focus:ring-2 focus:ring-primary"
     {placeholder}
   />
 </div> 

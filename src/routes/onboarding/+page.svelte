@@ -67,7 +67,7 @@
 				<div
 					class="h-2.5 w-2.5 rounded-full transition-colors duration-200 {i === currentSlide
 						? 'bg-primary'
-						: 'bg-backgroundSecondary'}"
+						: 'bg-background-secondary'}"
 				></div>
 			{/each}
 		</div>
@@ -82,7 +82,7 @@
 				<span>Продолжить по email</span>
 			</button>
 			<button
-				class="border-backgroundSecondary flex w-full items-center justify-center space-x-3 rounded-xl border py-4 font-medium text-white"
+				class="border-background-secondary flex w-full items-center justify-center space-x-3 rounded-xl border py-4 font-medium text-white"
 			>
 				<img src="{$page.data.assetPath}/google.png" alt="Google" class="h-5 w-5" />
 				<span>Продолжить с Google</span>
