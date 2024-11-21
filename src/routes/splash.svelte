@@ -6,7 +6,7 @@
 	<div class="space-y-2 text-center" in:fly={{ y: -50, duration: 100 }}>
 		<h1 class="animate-slide-down text-5xl font-bold">Drive</h1>
 		<p
-			class="bg-primary-gradient animate-slide-down bg-clip-text text-5xl font-bold text-transparent"
+			class="animate-slide-down bg-primary-gradient bg-clip-text text-5xl font-bold text-transparent"
 		>
 			Go
 		</p>

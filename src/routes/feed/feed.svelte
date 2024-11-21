@@ -1,7 +1,6 @@
 <script lang="ts">
+	import { EventStatus, type EventShortInfo, EventType } from '$lib/types';
 	import { SquareArrowOutUpRight } from 'lucide-svelte';
-	import { fly } from 'svelte/transition';
-	type Status = keyof typeof statusColorMap;
 
 	function getProgressGradient(percentage: number) {
 		// Return gradient colors based on percentage filled
@@ -18,18 +17,53 @@
 	let activeTab: 'upcoming' | 'completed' | 'all' = 'upcoming';
 
 	const statusColorMap = {
-		ЗАВЕРШЕН: '#8E96FF',
-		'В ПЛАНЕ': '#FF968E',
-		'В ПРОЦЕССЕ': '#89cf80'
+		[EventStatus.COMPLETED]: '#8E96FF',
+		[EventStatus.PLANNED]: '#FF968E',
+		[EventStatus.IN_PROGRESS]: '#89cf80'
 	} as const;
 
 	// Type the mock data status
-	const items: { id: number; title: string; status: Status; progress: string }[] = [
-		{ id: 1, title: 'Cool meetup', status: 'В ПРОЦЕССЕ', progress: '13 /15' },
-		{ id: 2, title: 'Ferrari Meet', status: 'В ПРОЦЕССЕ', progress: '9/20' },
-		{ id: 3, title: 'Tsunami Picnic', status: 'В ПЛАНЕ', progress: '5/1000' },
-		{ id: 4, title: 'Swamp Rust', status: 'В ПЛАНЕ', progress: '18/50' },
-		{ id: 5, title: 'Evening Meet', status: 'В ПРОЦЕССЕ', progress: '10/20' }
+	const items: EventShortInfo[] = [
+		{
+			id: 1,
+			title: 'Cool meetup',
+			status: EventStatus.IN_PROGRESS,
+			participants: 13,
+			participantsLimit: 15,
+			type: EventType.PUBLIC
+		},
+		{
+			id: 2,
+			title: 'Ferrari Meet',
+			status: EventStatus.IN_PROGRESS,
+			participants: 9,
+			participantsLimit: 20,
+			type: EventType.PUBLIC
+		},
+		{
+			id: 3,
+			title: 'Tsunami Picnic',
+			status: EventStatus.PLANNED,
+			participants: 5,
+			participantsLimit: 1000,
+			type: EventType.PUBLIC
+		},
+		{
+			id: 4,
+			title: 'Swamp Rust',
+			status: EventStatus.PLANNED,
+			participants: 18,
+			participantsLimit: 50,
+			type: EventType.PUBLIC
+		},
+		{
+			id: 5,
+			title: 'Evening Meet',
+			status: EventStatus.IN_PROGRESS,
+			participants: 10,
+			participantsLimit: 20,
+			type: EventType.PUBLIC
+		}
 	];
 
 	// Add loading state
@@ -41,11 +75,7 @@
 	}, 1500);
 </script>
 
-<div 
-	class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8"
-	in:fly={{ x: 100, duration: 400, delay: 300 }}
-	out:fly={{ x: -100, duration: 400 }}
->
+<div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
 	<h1 class="text-center text-2xl font-bold text-white">Лента</h1>
 	<div class="flex items-center justify-center">
 		<div class="mb-2 inline-flex w-full max-w-md rounded-full bg-background-secondary/50">
@@ -73,7 +103,7 @@
 	<div class="space-y-3">
 		{#if isLoading}
 			{#each Array(3) as _}
-				<div class="block rounded-lg bg-background-secondary/50 p-4 animate-pulse">
+				<div class="block animate-pulse rounded-lg bg-background-secondary/50 p-4">
 					<div class="mb-3 flex items-center justify-between">
 						<div class="flex items-center gap-4">
 							<div class="h-12 w-12 rounded-xl bg-gray-700"></div>
@@ -104,17 +134,19 @@
 									<SquareArrowOutUpRight class="h-6 w-6 text-white" />
 								</div>
 								<div>
-									<h2 class="text-lg font-semibold text-white transition-colors hover:text-blue-400">
+									<h2
+										class="text-lg font-semibold text-white transition-colors hover:text-blue-400"
+									>
 										{item.title}
 									</h2>
-									<p class="text-sm text-diactivated">Публичный</p>
+									<p class="text-sm text-deactivated">Публичный</p>
 								</div>
 							</div>
 							<div class="flex flex-col items-end gap-2.5">
 								<span
 									class="inline-flex items-center rounded-full bg-[#A06AF9] px-4 py-1.5 text-sm font-bold text-white"
 								>
-									{item.progress}
+									{item.participants}/{item.participantsLimit}
 								</span>
 								<span
 									class="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-bold text-white/90 shadow-sm"
@@ -122,7 +154,11 @@
 										item.status
 									]}; text-shadow: 0 1px 2px rgba(0,0,0,0.2);"
 								>
-									{item.status}
+									{item.status === EventStatus.COMPLETED
+										? 'Завершен'
+										: item.status === EventStatus.PLANNED
+											? 'В плане'
+											: 'В процессе'}
 								</span>
 							</div>
 						</div>
@@ -130,11 +166,13 @@
 							<div
 								class="h-full rounded-full transition-all"
 								style="
-									width: {(parseInt(item.progress.split('/')[0]) / parseInt(item.progress.split('/')[1])) * 100}%;
+									width: {(parseInt(item.participants.toString()) / parseInt(item.participantsLimit.toString())) *
+									100}%;
 									background: {getProgressGradient(
-									(parseInt(item.progress.split('/')[0]) / parseInt(item.progress.split('/')[1])) *
+									(parseInt(item.participants.toString()) /
+										parseInt(item.participantsLimit.toString())) *
 										100
-									)};
+								)};
 								"
 							></div>
 						</div>

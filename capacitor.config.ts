@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
 	appId: 'com.github.orientallines.drivegomigle',
 	appName: 'DriveGoMingle',
-	webDir: 'dist',
+	webDir: 'build',
 	server: {
 		androidScheme: 'https'
 	}

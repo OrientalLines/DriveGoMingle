@@ -26,9 +26,9 @@
 </script>
 
 <div class="min-h-screen px-8 py-12">
-	<a 
+	<a
 		href="/"
-		class="absolute left-8 top-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+		class="absolute left-8 top-6 flex items-center gap-2 text-gray-400 transition-colors hover:text-white"
 	>
 		<ArrowLeft size={20} />
 		<span>Назад</span>
@@ -73,7 +73,7 @@
 
 		<button
 			type="submit"
-			class="bg-primary hover:bg-primary/90 w-full rounded-xl py-4 font-medium text-white transition-colors"
+			class="w-full rounded-xl bg-primary py-4 font-medium text-white transition-colors hover:bg-primary/90"
 		>
 			{isLogin ? 'Войти' : 'Зарегистрироваться'}
 		</button>

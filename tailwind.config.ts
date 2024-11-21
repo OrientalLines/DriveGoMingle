@@ -16,7 +16,7 @@ export default {
 				secondary: '#C25FFF',
 				background: '#181A20',
 				'background-secondary': '#262A34',
-				diactivated: '#5E6272',
+				deactivated: '#5E6272',
 				'light-green': '#A5F59C'
 			},
 			backgroundImage: {

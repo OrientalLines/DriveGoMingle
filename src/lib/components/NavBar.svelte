@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { MessageSquare, Plus, UserRound } from 'lucide-svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
 	import { Newspaper } from 'lucide-svelte';
 
 	export let currentView: 'feed' | 'profile' | 'chats';
 	export let onViewChange: (view: 'feed' | 'profile' | 'chats') => void;
 
 	const navItems = [
-		{ label: 'ПРОФИЛЬ', icon: UserRound, view: 'profile' },
+		{ label: 'ЧАТЫ', icon: MessageSquare, view: 'chats' },
 		{ label: 'ЛЕНТА', icon: Newspaper, view: 'feed' },
-		{ label: 'ЧАТЫ', icon: MessageSquare, view: 'chats' }
+		{ label: 'ПРОФИЛЬ', icon: UserRound, view: 'profile' }
 	];
 
 	function handleViewChange(view: 'feed' | 'profile' | 'chats') {
@@ -18,7 +17,7 @@
 	}
 </script>
 
-<nav class="safe-area-bottom fixed bottom-0 left-0 right-0 bg-background/10 backdrop-blur-lg">
+<nav class="safe-area-bottom fixed bottom-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-lg">
 	<div class="mx-auto flex max-w-screen-sm items-center justify-between px-4 py-3 sm:px-6">
 		{#each navItems as item}
 			<button
@@ -43,10 +42,14 @@
 
 				{#if currentView === item.view}
 					<div
-						in:scale={{ duration: 200, delay: 0, opacity: 0.5, easing: cubicOut, start: 0.95 }}
-						out:fade={{ duration: 100 }}
-						class="absolute inset-0 rounded-2xl bg-secondary/10"
-						style="clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%);"
+						in:scale={{ duration: 300, start: 0.8 }}
+						out:fade={{ duration: 200 }}
+						class="absolute -inset-1 -z-10 rounded-xl bg-gradient-to-b from-secondary/30 to-secondary/5"
+					></div>
+					<div
+						in:scale={{ duration: 400, delay: 100, start: 0.7 }}
+						out:fade={{ duration: 150 }}
+						class="absolute -inset-0.5 -z-20 rounded-xl bg-gradient-to-t from-secondary/20 to-secondary/5 blur-sm"
 					></div>
 				{/if}
 			</button>

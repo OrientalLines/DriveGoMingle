@@ -39,6 +39,8 @@
 		"@capacitor/cli": "^6.1.2",
 		"@capacitor/core": "^6.1.2",
 		"@capacitor/ios": "^6.1.2",
+		"@sveltejs/adapter-node": "^5.2.9",
+		"@sveltejs/adapter-static": "^3.0.6",
 		"lucide-svelte": "^0.456.0",
 		"svelte-material-icons": "^3.0.5"
 	}

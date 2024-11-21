@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Calendar, Map, MessageCircle } from 'lucide-svelte';
-	import BackButton from '../../../components/BackButton.svelte';
 	import { fly } from 'svelte/transition';
-	import Toast from '../../../components/Toast.svelte';
+	import Toast from '$lib/components/Toast.svelte';
+	import BackButton from '$lib/components/BackButton.svelte';
 
 	// Replace mock data with actual data from page store
 	const event = $page.data.event;
@@ -64,7 +64,7 @@
 				<div class="mt-1 h-4 w-24 animate-pulse rounded bg-gray-700"></div>
 			{:else}
 				<h2 class="text-xl font-bold">{event.title}</h2>
-				<p class="text-sm text-diactivated">Подробности</p>
+				<p class="text-sm text-deactivated">Подробности</p>
 			{/if}
 		</div>
 	</header>
@@ -101,7 +101,7 @@
 				{:else}
 					<div class="col-span-2">
 						<h1 class="text-xl font-bold">{event.title}</h1>
-						<p class="mt-1 text-sm text-diactivated">{event.description}</p>
+						<p class="mt-1 text-sm text-deactivated">{event.description}</p>
 						<button
 							class="mt-4 rounded-full bg-primary px-8 py-3 font-bold text-white"
 							on:click={handleJoinEvent}
@@ -162,7 +162,7 @@
 						type="text"
 						bind:value={searchQuery}
 						placeholder="Поиск по имени"
-						class="text-md w-full rounded-lg bg-background-secondary/50 px-4 py-2 text-white placeholder:text-diactivated focus:outline-none focus:ring-2 focus:ring-primary"
+						class="text-md w-full rounded-lg bg-background-secondary/50 px-4 py-2 text-white placeholder:text-deactivated focus:outline-none focus:ring-2 focus:ring-primary"
 					/>
 				</div>
 
@@ -177,11 +177,11 @@
 					<div class="relative h-1.5 overflow-hidden rounded-full bg-gray-700">
 						<div
 							class="absolute h-full bg-gradient-to-r from-pink-500 to-purple-500"
-							style="width: {(participants.current / participants.max) * 100}%"
+							style="width: {(event.participants / event.participantsLimit) * 100}%"
 						></div>
 					</div>
 					<p class="mt-1 text-right text-sm text-gray-400">
-						{participants.current}/{participants.max}
+						{event.participants}/{event.participantsLimit}
 					</p>
 
 					<!-- Filtered participants list -->
@@ -213,7 +213,7 @@
 									</div>
 									<span class="text-lg font-semibold">{participant.name}</span>
 								</div>
-								<div class="text-diactivated">
+								<div class="text-deactivated">
 									<MessageCircle class="h-5 w-5" />
 								</div>
 							</div>
