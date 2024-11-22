@@ -28,7 +28,7 @@
 	];
 </script>
 
-<div class="mx-auto min-h-screen text-white">
+<div class="mx-auto text-white">
 	<header class="flex items-center justify-between p-4">
 		<div class="w-8"></div>
 		<h1 class="text-center text-2xl font-semibold">Чаты</h1>
@@ -98,7 +98,7 @@
 		{#each directMessages as message}
 			<button
 				class="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
-				on:click={() => goto(`/chats/direct/${message.id}`)}
+				on:click={() => goto(`chats/direct/${message.id}`)}
 			>
 				<img src={message.avatar} alt={message.name} class="h-12 w-12 rounded-full" />
 				<span class="flex-grow text-lg font-semibold">{message.name}</span>

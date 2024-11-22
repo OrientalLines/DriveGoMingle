@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { EventStatus, type EventShortInfo } from '$lib/types';
+	import { EventStatus, EventType, type EventShortInfo } from '$lib/types';
 
 	export let event: EventShortInfo;
 
@@ -27,8 +27,10 @@
 							: 'В процессе'}
 				</span>
 			</div>
-			<h3 class="mb-1 line-clamp-2 text-sm font-medium">{event.title}</h3>
-			<p class="text-xs text-gray-500">{event.type}</p>
+			<h3 class="mb-1 line-clamp-2 text-sm font-semibold">{event.title}</h3>
+			<p class="text-xs text-gray-500">
+				{event.type === EventType.PRIVATE ? 'Приватное' : 'Публичное'}
+			</p>
 		</div>
 
 		<div class="mt-auto">

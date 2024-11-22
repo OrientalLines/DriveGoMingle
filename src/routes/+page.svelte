@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import Splash from './splash.svelte';
-	import Carousel from './onboarding/+page.svelte';
-	import Main from './main/+page.svelte';
 	import { fade } from 'svelte/transition';
 
-	let currentPage: 'splash' | 'carousel' | 'main' = 'splash';
+	let showSplash = true;
 	let isAuthenticated = true; // Replace with your actual auth logic
 
 	onMount(() => {
 		// Check authentication first
 		if (isAuthenticated) {
-			currentPage = 'main';
+			handleNavigation('/app');
 			return;
 		}
 
@@ -19,24 +18,25 @@
 		const hasVisited = localStorage.getItem('hasVisitedBefore');
 
 		if (hasVisited) {
-			currentPage = 'carousel';
+			handleNavigation('/onboarding');
 		} else {
 			setTimeout(() => {
-				currentPage = 'carousel';
+				handleNavigation('/onboarding');
 				localStorage.setItem('hasVisitedBefore', 'true');
 			}, 2000);
 		}
 	});
+
+	function handleNavigation(path: string) {
+		showSplash = false;
+		setTimeout(() => {
+			goto(path);
+		}, 300); // Match fade duration
+	}
 </script>
 
-{#if currentPage === 'splash'}
+{#if showSplash}
 	<div in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
 		<Splash />
 	</div>
-{:else if !isAuthenticated}
-	<div>
-		<Carousel />
-	</div>
-{:else}
-	<Main />
 {/if}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import EventCard from '$lib/components/EventCard.svelte';
 	import { EventStatus, EventType } from '$lib/types';
+	import { goto } from '$app/navigation';
 
 	const user = {
 		name: 'Blake Goooal',
@@ -13,28 +14,28 @@
 				status: EventStatus.COMPLETED,
 				participants: 50,
 				participantsLimit: 50,
-				type: EventType.PUBLIC,
+				type: EventType.PUBLIC
 			},
 			{
 				title: 'Ралли ретро-автомобилей',
 				status: EventStatus.IN_PROGRESS,
 				participants: 15,
 				participantsLimit: 30,
-				type: EventType.PRIVATE,
+				type: EventType.PRIVATE
 			},
 			{
 				title: 'Автомобильный фестиваль',
 				status: EventStatus.PLANNED,
 				participants: 200,
 				participantsLimit: 500,
-				type: EventType.PUBLIC,
+				type: EventType.PUBLIC
 			},
 			{
 				title: 'Мастер-класс по автозвуку',
 				status: EventStatus.IN_PROGRESS,
 				participants: 18,
 				participantsLimit: 20,
-				type: EventType.PRIVATE,
+				type: EventType.PRIVATE
 			}
 		],
 		participating: [
@@ -43,35 +44,35 @@
 				status: EventStatus.PLANNED,
 				participants: 80,
 				participantsLimit: 100,
-				type: EventType.PUBLIC,
+				type: EventType.PUBLIC
 			},
 			{
 				title: 'Гонки на внедорожниках',
 				status: EventStatus.COMPLETED,
 				participants: 25,
 				participantsLimit: 25,
-				type: EventType.PUBLIC,
+				type: EventType.PUBLIC
 			},
 			{
 				title: 'Парад классических автомобилей',
 				status: EventStatus.PLANNED,
 				participants: 45,
 				participantsLimit: 60,
-				type: EventType.PUBLIC,
+				type: EventType.PUBLIC
 			},
 			{
 				title: 'Автомобильный квест по городу',
 				status: EventStatus.IN_PROGRESS,
 				participants: 30,
 				participantsLimit: 40,
-				type: EventType.PRIVATE,
+				type: EventType.PRIVATE
 			},
 			{
 				title: 'Семинар по безопасному вождению',
 				status: EventStatus.PLANNED,
 				participants: 15,
 				participantsLimit: 30,
-				type: EventType.PUBLIC,
+				type: EventType.PUBLIC
 			}
 		]
 	};
@@ -84,7 +85,13 @@
 		loading = false;
 	}, 500);
 
-	export let onEdit: () => void;
+	const handleViewAllOrganizing = () => {
+		goto('profile/events/organizing', { replaceState: false });
+	};
+
+	const onEdit = () => {
+		goto('profile/edit', { replaceState: false });
+	};
 </script>
 
 <div class="min-h-screen">
@@ -126,10 +133,10 @@
 		<header class="relative mb-10 text-center">
 			<img src={user.avatar} alt="Profile avatar" class="mx-auto mb-3 h-36 w-36 rounded-full" />
 			<h1 class="text-3xl font-semibold">{user.name}</h1>
-			<p class="mb-5 text-light-green font-medium">{user.email}</p>
+			<p class="mb-5 font-medium text-light-green">{user.email}</p>
 
 			<div class="flex flex-col items-center gap-3">
-				<button 
+				<button
 					class="w-2/3 rounded-full border-2 border-primary px-4 py-3 font-medium text-white"
 					on:click={onEdit}
 				>
@@ -150,7 +157,10 @@
 					<EventCard {event} />
 				{/each}
 			</div>
-			<button class="w-full rounded-lg border-2 border-primary px-4 py-3 font-medium text-white">
+			<button
+				on:click={handleViewAllOrganizing}
+				class="w-full rounded-lg border-2 border-primary px-4 py-3 font-medium text-white"
+			>
 				Посмотреть все
 			</button>
 		</section>

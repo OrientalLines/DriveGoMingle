@@ -18,3 +18,4 @@ export type EventShortInfo = {
     participantsLimit: number;
 };
 
+

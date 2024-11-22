@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { Eye, EyeOff, Camera } from 'lucide-svelte';
 
@@ -16,14 +17,14 @@
 		showPassword = !showPassword;
 	}
 
-	export let onBack: () => void;
+	const onBack = () => {
+		goto('/app/profile', { replaceState: false });
+	};
 </script>
 
-<div class="min-h-screen space-y-8 p-4">
-	<header class="relative mb-8">
-		<div class="absolute left-0">
-			<BackButton onClick={onBack} />
-		</div>
+<div class="space-y-8 p-4">
+	<header class="relative mb-8 flex items-center justify-center">
+		<BackButton onClick={onBack} />
 		<h1 class="w-full text-center text-xl font-semibold">Редактирование профиля</h1>
 	</header>
 

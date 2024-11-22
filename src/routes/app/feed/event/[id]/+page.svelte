@@ -52,7 +52,7 @@
 <Toast message="Вы успешно присоединились к мероприятию!" visible={showToast} />
 <div
 	class="min-h-screen space-y-8 p-4 text-white"
-	in:fly={{ x: 100, duration: 400, delay: 300 }}
+	in:fly={{ x: -100, duration: 400 }}
 	out:fly={{ x: -100, duration: 400 }}
 >
 	<!-- Header -->
