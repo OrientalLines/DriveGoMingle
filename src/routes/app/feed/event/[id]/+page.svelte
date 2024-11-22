@@ -170,7 +170,7 @@
 					<div class="mb-2 h-6 w-32 animate-pulse rounded bg-gray-700"></div>
 					<div class="h-1.5 animate-pulse rounded-full bg-gray-700"></div>
 					<div class="mt-1 flex justify-end">
-						<div class="h-4 w-16 animate-pulse rounded bg-gray-700"></div>
+						<div class="h-event?4 w-16 animate-pulse rounded bg-gray-700"></div>
 					</div>
 				{:else}
 					<h3 class="mb-2 text-lg font-semibold">Участники</h3>

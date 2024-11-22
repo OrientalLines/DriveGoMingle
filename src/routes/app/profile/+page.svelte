@@ -10,36 +10,33 @@
 			'https://storage.vscl.ru/logos/a1/32/e6/a132e6ef0776dc37ed1f8a25d0140a95b0fa4f10.png?s=400',
 		organizing: [
 			{
-				title: 'Встреча владельцев BMW',
+				id: 1,
+				title: 'Дрифт-соревнования',
 				status: EventStatus.COMPLETED,
-				participants: 50,
-				participantsLimit: 50,
+				participants: 35,
+				participantsLimit: 35,
 				type: EventType.PUBLIC
 			},
 			{
-				title: 'Ралли ретро-автомобилей',
+				id: 3,
+				title: 'Ночной автопробег',
 				status: EventStatus.IN_PROGRESS,
-				participants: 15,
-				participantsLimit: 30,
+				participants: 55,
+				participantsLimit: 60,
 				type: EventType.PRIVATE
 			},
 			{
-				title: 'Автомобильный фестиваль',
+				id: 4,
+				title: 'Мастер-класс по экстремальному вождению',
 				status: EventStatus.PLANNED,
-				participants: 200,
-				participantsLimit: 500,
+				participants: 22,
+				participantsLimit: 25,
 				type: EventType.PUBLIC
-			},
-			{
-				title: 'Мастер-класс по автозвуку',
-				status: EventStatus.IN_PROGRESS,
-				participants: 18,
-				participantsLimit: 20,
-				type: EventType.PRIVATE
 			}
 		],
 		participating: [
 			{
+				id: 5,
 				title: 'Выставка тюнингованных авто',
 				status: EventStatus.PLANNED,
 				participants: 80,
@@ -47,6 +44,7 @@
 				type: EventType.PUBLIC
 			},
 			{
+				id: 6,
 				title: 'Гонки на внедорожниках',
 				status: EventStatus.COMPLETED,
 				participants: 25,
@@ -54,6 +52,7 @@
 				type: EventType.PUBLIC
 			},
 			{
+				id: 7,
 				title: 'Парад классических автомобилей',
 				status: EventStatus.PLANNED,
 				participants: 45,
@@ -61,6 +60,7 @@
 				type: EventType.PUBLIC
 			},
 			{
+				id: 8,
 				title: 'Автомобильный квест по городу',
 				status: EventStatus.IN_PROGRESS,
 				participants: 30,
@@ -68,6 +68,7 @@
 				type: EventType.PRIVATE
 			},
 			{
+				id: 9,
 				title: 'Семинар по безопасному вождению',
 				status: EventStatus.PLANNED,
 				participants: 15,
@@ -87,6 +88,10 @@
 
 	const handleViewAllOrganizing = () => {
 		goto('profile/events/organizing', { replaceState: false });
+	};
+
+	const handleViewAllParticipating = () => {
+		goto('profile/events/participating', { replaceState: false });
 	};
 
 	const onEdit = () => {
@@ -148,18 +153,29 @@
 			</div>
 		</header>
 
+		<div class="mb-8">
+			<h2 class="text-md mb-2 text-center font-medium uppercase text-deactivated">
+				Ваши мероприятия
+			</h2>
+			<div
+				class="mb-6 h-px w-full bg-gradient-to-r from-transparent via-deactivated/50 to-transparent"
+			></div>
+		</div>
+
 		<section class="mb-8">
 			<h2 class="mb-1 text-2xl font-semibold">Организую</h2>
-			<p class="text-sm font-medium text-gray-500">{user.organizing.length} митапов</p>
+			<p class="text-sm font-medium text-gray-500">{user.organizing.length} мероприятий</p>
 
 			<div class="my-5 grid grid-cols-2 gap-4">
 				{#each user.organizing.slice(0, 2) as event}
-					<EventCard {event} />
+					<button class="text-left" on:click={() => goto(`profile/events/${event.id}`)}>
+						<EventCard {event} />
+					</button>
 				{/each}
 			</div>
 			<button
-				on:click={handleViewAllOrganizing}
-				class="w-full rounded-lg border-2 border-primary px-4 py-3 font-medium text-white"
+				on:click={handleViewAllParticipating}
+				class="w-full rounded-xl border-2 border-primary px-4 py-3 font-medium text-white"
 			>
 				Посмотреть все
 			</button>
@@ -167,14 +183,19 @@
 
 		<section>
 			<h2 class="mb-1 text-2xl font-semibold">Участвую</h2>
-			<p class="text-sm font-medium text-gray-500">{user.participating.length} митапов</p>
+			<p class="text-sm font-medium text-gray-500">{user.participating.length} мероприятий</p>
 
 			<div class="my-5 grid grid-cols-2 gap-4">
 				{#each user.participating.slice(0, 2) as event}
-					<EventCard {event} />
+					<button class="text-left" on:click={() => goto(`profile/events/${event.id}`)}>
+						<EventCard {event} />
+					</button>
 				{/each}
 			</div>
-			<button class="w-full rounded-lg border-2 border-secondary px-4 py-3 font-medium text-white">
+			<button
+				class="w-full rounded-xl border-2 border-secondary px-4 py-3 font-medium text-white"
+				on:click={handleViewAllOrganizing}
+			>
 				Посмотреть все
 			</button>
 		</section>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { ArrowLeft } from 'lucide-svelte';
-	import AuthToggle from '../../../components/auth/AuthToggle.svelte';
-	import FormInput from '../../../components/auth/FormInput.svelte';
+	import AuthToggle from '$lib/components/auth/AuthToggle.svelte';
+	import FormInput from '$lib/components/auth/FormInput.svelte';
 
 	let isLogin = true;
 	let email = '';

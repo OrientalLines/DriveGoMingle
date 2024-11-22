@@ -9,34 +9,42 @@
 
 	const events = [
 		{
-			title: 'Дрифт-соревнования',
+			title: 'Выставка тюнингованных авто',
+			status: EventStatus.PLANNED,
+			participants: 80,
+			participantsLimit: 100,
+			type: EventType.PUBLIC,
+			date: new Date('2024-02-15')
+		},
+		{
+			title: 'Гонки на внедорожниках',
 			status: EventStatus.COMPLETED,
-			participants: 35,
-			participantsLimit: 35,
+			participants: 25,
+			participantsLimit: 25,
 			type: EventType.PUBLIC,
 			date: new Date('2024-03-22')
 		},
 		{
-			title: 'Мотофестиваль "Два колеса"',
+			title: 'Парад классических автомобилей',
 			status: EventStatus.PLANNED,
-			participants: 75,
-			participantsLimit: 100,
+			participants: 45,
+			participantsLimit: 60,
 			type: EventType.PUBLIC,
 			date: new Date('2024-05-10')
 		},
 		{
-			title: 'Ночной автопробег',
+			title: 'Автомобильный квест по городу',
 			status: EventStatus.IN_PROGRESS,
-			participants: 55,
-			participantsLimit: 60,
+			participants: 30,
+			participantsLimit: 40,
 			type: EventType.PRIVATE,
 			date: new Date('2024-07-05')
 		},
 		{
-			title: 'Мастер-класс по экстремальному вождению',
+			title: 'Семинар по безопасному вождению',
 			status: EventStatus.PLANNED,
-			participants: 22,
-			participantsLimit: 25,
+			participants: 15,
+			participantsLimit: 30,
 			type: EventType.PUBLIC,
 			date: new Date('2024-09-18')
 		}
@@ -165,7 +173,7 @@
 			</button>
 		</div>
 
-		<h1 class="mb-6 text-2xl font-semibold">Организую</h1>
+		<h1 class="mb-6 text-2xl font-semibold">Участвую</h1>
 	</div>
 
 	{#if view === 'list'}

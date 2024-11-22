@@ -25,7 +25,7 @@
 	<NavBar
 		currentView={currentView}
 		onViewChange={(view) => {
-			goto(`${view}`);
+			goto(`/app/${view}`);
 		}}
 	/>
 </div>
