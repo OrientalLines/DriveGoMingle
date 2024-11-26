@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Calendar, Map, MessageCircle } from 'lucide-svelte';
-	import { fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import Toast from '$lib/components/Toast.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 
@@ -51,9 +51,9 @@
 
 <Toast message="Вы успешно присоединились к мероприятию!" visible={showToast} />
 <div
-	class="min-h-screen space-y-8 p-4 text-white"
-	in:fly={{ x: -100, duration: 400 }}
-	out:fly={{ x: -100, duration: 400 }}
+	class="min-h-screen space-y-8 text-white"
+	in:fade={{ duration: 200 }}
+	out:fade={{ duration: 200 }}
 >
 	<!-- Header -->
 	<header class="flex items-center gap-4">

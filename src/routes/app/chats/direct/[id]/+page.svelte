@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { Info, Paperclip, Phone } from 'lucide-svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
+	import { goto } from '$app/navigation';
+	import { hideNav } from '$lib/stores/navigation';
+	import { onMount, onDestroy } from 'svelte';
 
 	let messages = [
 		{
@@ -30,17 +33,25 @@
 			event: {
 				title: 'Очень клёвая туса',
 				description: 'Even more cool description of this event',
-				image: 'https://xsgames.co/randomusers/avatar.php?g=female',
+				image: '/placeholder.jpg',
 				actionText: 'Перейти'
 			}
 		}
 	];
+
+	onMount(() => {
+		hideNav.set(true);
+	});
+
+	onDestroy(() => {
+		hideNav.set(false);
+	});
 </script>
 
 <div
-	class="min-h-screen space-y-8 p-4 text-white"
-	in:fly={{ x: 100, duration: 400, delay: 300 }}
-	out:fly={{ x: -100, duration: 400 }}
+	class="space-y-8 text-white h-[calc(100vh-72px)]"
+	in:fade={{ duration: 200 }}
+	out:fade={{ duration: 300 }}
 >
 	<!-- Header -->
 	<header class="flex w-full items-center">
@@ -80,7 +91,10 @@
 								<div class="flex-1">
 									<h3 class="text-lg font-medium">{message.event.title}</h3>
 									<p class="mt-1 text-sm text-deactivated">{message.event.description}</p>
-									<button class="mt-3 w-full rounded-full bg-primary px-4 py-2 text-sm">
+									<button
+										class="mt-3 w-full rounded-full border-2 border-secondary px-4 py-2 text-sm font-semibold"
+										on:click={() => goto('/app/feed/event/6')}
+									>
 										{message.event.actionText}
 									</button>
 								</div>
@@ -105,7 +119,7 @@
 
 	<!-- Input Area -->
 	<div
-		class="safe-area-bottom fixed bottom-0 left-0 right-0 flex w-full items-center rounded-t-2xl bg-background-secondary p-4"
+		class="fixed bottom-0 left-0 right-0 mb-[72px] flex w-full items-center rounded-t-2xl bg-background-secondary p-4"
 	>
 		<button class="rounded-full bg-primary p-2 sm:p-3">
 			<Paperclip class="h-6 w-6 stroke-[1.5px] text-white sm:h-7 sm:w-7" />

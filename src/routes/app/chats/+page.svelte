@@ -26,6 +26,14 @@
 			avatar: 'https://xsgames.co/randomusers/avatar.php?g=female'
 		}
 	];
+
+	// Add loading state
+	let isLoading = true;
+
+	// Simulate loading for demo purposes
+	setTimeout(() => {
+		isLoading = false;
+	}, 1500);
 </script>
 
 <div class="mx-auto text-white">
@@ -69,24 +77,39 @@
 		</div>
 		<div class="mx-4 h-[1.5px] bg-background-secondary"></div>
 
-		{#each groups as group}
+		{#if isLoading}
 			<div class="p-4">
-				<span class="text-lg font-semibold">{group.name}</span>
+				<div class="h-6 w-40 animate-pulse rounded bg-gray-700"></div>
 				<div class="mt-2 flex">
-					{#each group.members as member}
-						{#if member.avatar}
-							<img src={member.avatar} alt="Member avatar" class="-mr-2.5 h-10 w-10 rounded-full" />
-						{:else if member.count}
-							<span
-								class="flex h-10 w-10 items-center justify-center rounded-full bg-background-secondary text-sm"
-							>
-								+{member.count}
-							</span>
-						{/if}
+					{#each Array(4) as _}
+						<div class="-mr-2.5 h-10 w-10 animate-pulse rounded-full bg-gray-700"></div>
 					{/each}
 				</div>
 			</div>
-		{/each}
+		{:else}
+			{#each groups as group}
+				<div class="p-4">
+					<span class="text-lg font-semibold">{group.name}</span>
+					<div class="mt-2 flex">
+						{#each group.members as member}
+							{#if member.avatar}
+								<img
+									src={member.avatar}
+									alt="Member avatar"
+									class="-mr-2.5 h-10 w-10 rounded-full"
+								/>
+							{:else if member.count}
+								<span
+									class="flex h-10 w-10 items-center justify-center rounded-full bg-background-secondary text-sm"
+								>
+									+{member.count}
+								</span>
+							{/if}
+						{/each}
+					</div>
+				</div>
+			{/each}
+		{/if}
 	</section>
 
 	<section>
@@ -95,14 +118,23 @@
 		</div>
 		<div class="mx-4 h-[1.5px] bg-background-secondary"></div>
 
-		{#each directMessages as message}
-			<button
-				class="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
-				on:click={() => goto(`chats/direct/${message.id}`)}
-			>
-				<img src={message.avatar} alt={message.name} class="h-12 w-12 rounded-full" />
-				<span class="flex-grow text-lg font-semibold">{message.name}</span>
-			</button>
-		{/each}
+		{#if isLoading}
+			{#each Array(3) as _}
+				<div class="flex w-full items-center gap-4 p-4">
+					<div class="h-12 w-12 animate-pulse rounded-full bg-gray-700"></div>
+					<div class="h-6 w-40 animate-pulse rounded bg-gray-700"></div>
+				</div>
+			{/each}
+		{:else}
+			{#each directMessages as message}
+				<button
+					class="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
+					on:click={() => goto(`chats/direct/${message.id}`)}
+				>
+					<img src={message.avatar} alt={message.name} class="h-12 w-12 rounded-full" />
+					<span class="flex-grow text-lg font-semibold">{message.name}</span>
+				</button>
+			{/each}
+		{/if}
 	</section>
 </div>

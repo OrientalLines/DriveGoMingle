@@ -3,12 +3,18 @@
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { hideNav } from '$lib/stores/navigation';
+
 	let currentView: 'feed' | 'profile' | 'chats' = 'feed';
 
-	// Update currentView whenever the path changes
 	$: {
 		const path = $page.url.pathname;
 		currentView = path.split('/')[2] as 'feed' | 'profile' | 'chats';
+		if (path.includes('/chats/direct/')) {
+			hideNav.set(true);
+		} else {
+			hideNav.set(false);
+		}
 	}
 
 	onMount(() => {
@@ -22,10 +28,13 @@
 		<slot />
 	</main>
 
-	<NavBar
-		currentView={currentView}
-		onViewChange={(view) => {
-			goto(`/app/${view}`);
-		}}
-	/>
+	<!-- Changed from !hideNav to !$hideNav to make it reactive -->
+	{#if !$hideNav}
+		<NavBar
+			{currentView}
+			onViewChange={(view) => {
+				goto(`/app/${view}`);
+			}}
+		/>
+	{/if}
 </div>
