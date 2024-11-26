@@ -7,6 +7,13 @@
 
 	let currentView: 'feed' | 'profile' | 'chats' = 'feed';
 
+	// Add page title mapping
+	const viewTitles = {
+		'feed': 'Лента',
+		'profile': 'Профиль',
+		'chats': 'Чаты'
+	} as const;
+
 	$: {
 		const path = $page.url.pathname;
 		currentView = path.split('/')[2] as 'feed' | 'profile' | 'chats';
@@ -15,6 +22,8 @@
 		} else {
 			hideNav.set(false);
 		}
+		// Set page title
+		document.title = viewTitles[currentView] || 'App';
 	}
 
 	onMount(() => {
