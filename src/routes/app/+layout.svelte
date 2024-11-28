@@ -4,18 +4,20 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { hideNav } from '$lib/stores/navigation';
+	import { browser } from '$app/environment';
 
 	let currentView: 'feed' | 'profile' | 'chats' = 'feed';
 
-	// Add page title mapping
 	const viewTitles = {
-		'feed': 'Лента',
-		'profile': 'Профиль',
-		'chats': 'Чаты'
+		feed: 'Лента',
+		profile: 'Профиль',
+		chats: 'Чаты'
 	} as const;
 
 	$: {
 		const path = $page.url.pathname;
+
+		// Do not try to show nav on chats direct page
 		currentView = path.split('/')[2] as 'feed' | 'profile' | 'chats';
 		if (path.includes('/chats/direct/')) {
 			hideNav.set(true);
@@ -23,7 +25,9 @@
 			hideNav.set(false);
 		}
 		// Set page title
-		document.title = viewTitles[currentView] || 'App';
+		if (browser) {
+			document.title = viewTitles[currentView] || 'App';
+		}
 	}
 
 	onMount(() => {
@@ -32,12 +36,10 @@
 </script>
 
 <div class="min-h-screen pb-20 text-white">
-	<!-- Main Content -->
 	<main class="p-4">
 		<slot />
 	</main>
 
-	<!-- Changed from !hideNav to !$hideNav to make it reactive -->
 	{#if !$hideNav}
 		<NavBar
 			{currentView}
@@ -47,3 +49,10 @@
 		/>
 	{/if}
 </div>
+
+<style>
+	/* Ensure main content and navbar have a lower z-index than the popup */
+	:global(main), :global(nav) {
+		z-index: 10;
+	}
+</style>

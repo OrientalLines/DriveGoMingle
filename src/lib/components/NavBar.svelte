@@ -2,6 +2,8 @@
 	import { MessageSquare, Plus, UserRound } from 'lucide-svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { Newspaper } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	export let currentView: 'feed' | 'profile' | 'chats';
 	export let onViewChange: (view: 'feed' | 'profile' | 'chats') => void;
@@ -12,9 +14,37 @@
 		{ label: 'ПРОФИЛЬ', icon: UserRound, view: 'profile' }
 	];
 
+	let showCreateMenu = false;
+
+	const createOptions = [
+		{
+			label: 'Создать мероприятие',
+			action: () => goto('/app/new/event'),
+			icon: '⌚' // You might want to replace this with a proper icon component
+		},
+		{
+			label: 'Создать группу',
+			action: () => goto('/app/new/chat'),
+			icon: '👥' // You might want to replace this with a proper icon component
+		}
+	];
+
 	function handleViewChange(view: 'feed' | 'profile' | 'chats') {
 		onViewChange(view);
 	}
+
+	// Add click outside handler
+	onMount(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Element;
+			if (showCreateMenu && target && !target.closest('button')) {
+				showCreateMenu = false;
+			}
+		};
+
+		document.addEventListener('click', handleClickOutside);
+		return () => document.removeEventListener('click', handleClickOutside);
+	});
 </script>
 
 <nav class="safe-area-bottom fixed bottom-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-lg">
@@ -56,7 +86,8 @@
 		{/each}
 
 		<button
-			class="flex h-12 w-12 items-center justify-center rounded-full bg-primary shadow-lg transition-all hover:bg-primary/80 sm:h-16 sm:w-16"
+			on:click={() => (showCreateMenu = !showCreateMenu)}
+			class="relative flex h-12 w-12 items-center justify-center rounded-full bg-primary shadow-lg transition-all hover:bg-primary/80 sm:h-16 sm:w-16"
 		>
 			<div class="flex flex-col items-center justify-center">
 				<Plus class="h-7 w-7 stroke-[1.5px] text-white sm:h-8 sm:w-8" />
@@ -64,6 +95,36 @@
 		</button>
 	</div>
 </nav>
+
+{#if showCreateMenu}
+	<div
+		class="fixed inset-0 z-[100] flex items-end bg-background-secondary/30 backdrop-blur-md"
+		in:fade={{ duration: 150 }}
+		out:fade={{ duration: 150 }}
+	>
+		<div
+			class="w-full max-h-[80vh] overflow-y-auto rounded-t-3xl bg-background-secondary shadow-lg"
+			in:scale={{ duration: 200, start: 0.95, opacity: 0 }}
+			out:fade={{ duration: 150 }}
+		>
+			{#each createOptions as option, index}
+				<button
+					on:click|stopPropagation={() => {
+						option.action();
+						showCreateMenu = false;
+					}}
+					class="flex w-full items-center gap-3 px-6 py-4 text-left text-white transition-colors active:bg-white/20 {index === 0 ? 'rounded-t-3xl' : ''}"
+				>
+					<span class="text-2xl">{option.icon}</span>
+					<span class="text-base font-medium tracking-wide">{option.label}</span>
+				</button>
+				{#if index !== createOptions.length - 1}
+					<div class="mx-4 h-px bg-white/10"></div>
+				{/if}
+			{/each}
+		</div>
+	</div>
+{/if}
 
 <style>
 	/* Add safe area support for iOS devices */

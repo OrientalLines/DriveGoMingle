@@ -87,7 +87,7 @@
 		</div>
 
 		<div>
-			<label for="description" class="mb-1 block text-xs text-gray-500">ОПИСАНИЕ</label>
+			<label for="description" class="mb-1 block text-xs text-gray-500">Статус</label>
 			<input
 				id="description"
 				type="text"
