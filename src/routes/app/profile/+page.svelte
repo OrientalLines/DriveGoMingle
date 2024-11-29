@@ -2,81 +2,20 @@
 	import EventCard from '$lib/components/EventCard.svelte';
 	import { EventStatus, EventType } from '$lib/types';
 	import { goto } from '$app/navigation';
+	import { events } from '$lib/stores/events';
 
 	const user = {
 		name: 'Blake Goooal',
 		email: 'blake@email.com',
 		avatar:
-			'https://storage.vscl.ru/logos/a1/32/e6/a132e6ef0776dc37ed1f8a25d0140a95b0fa4f10.png?s=400',
-		organizing: [
-			{
-				id: 1,
-				title: 'Дрифт-соревнования',
-				status: EventStatus.COMPLETED,
-				participants: 35,
-				participantsLimit: 35,
-				type: EventType.PUBLIC
-			},
-			{
-				id: 3,
-				title: 'Ночной автопробег',
-				status: EventStatus.IN_PROGRESS,
-				participants: 55,
-				participantsLimit: 60,
-				type: EventType.PRIVATE
-			},
-			{
-				id: 4,
-				title: 'Мастер-класс по экстремальному вождению',
-				status: EventStatus.PLANNED,
-				participants: 22,
-				participantsLimit: 25,
-				type: EventType.PUBLIC
-			}
-		],
-		participating: [
-			{
-				id: 5,
-				title: 'Выставка тюнингованных авто',
-				status: EventStatus.PLANNED,
-				participants: 80,
-				participantsLimit: 100,
-				type: EventType.PUBLIC
-			},
-			{
-				id: 6,
-				title: 'Гонки на внедорожниках',
-				status: EventStatus.COMPLETED,
-				participants: 25,
-				participantsLimit: 25,
-				type: EventType.PUBLIC
-			},
-			{
-				id: 7,
-				title: 'Парад классических автомобилей',
-				status: EventStatus.PLANNED,
-				participants: 45,
-				participantsLimit: 60,
-				type: EventType.PUBLIC
-			},
-			{
-				id: 8,
-				title: 'Автомобильный квест по городу',
-				status: EventStatus.IN_PROGRESS,
-				participants: 30,
-				participantsLimit: 40,
-				type: EventType.PRIVATE
-			},
-			{
-				id: 9,
-				title: 'Семинар по безопасному вождению',
-				status: EventStatus.PLANNED,
-				participants: 15,
-				participantsLimit: 30,
-				type: EventType.PUBLIC
-			}
-		]
+			'https://storage.vscl.ru/logos/a1/32/e6/a132e6ef0776dc37ed1f8a25d0140a95b0fa4f10.png?s=400'
 	};
+
+	// Subscribe to events store and filter for organizing/participating
+	$: organizing = $events.filter((event) => event.authorUsername === 'kxrxh');
+	$: participating = $events.filter(
+		(event) => event.isParticipant && event.authorUsername !== 'kxrxh'
+	);
 
 	// Add loading state
 	let loading = true;
@@ -164,12 +103,15 @@
 
 		<section class="mb-8">
 			<h2 class="mb-1 text-2xl font-semibold">Организую</h2>
-			<p class="text-sm font-medium text-gray-500">{user.organizing.length} мероприятий</p>
+			<p class="text-sm font-medium text-gray-500">{organizing.length} мероприятий</p>
 
 			<div class="my-5 grid grid-cols-2 gap-4">
-				{#each user.organizing.slice(0, 2) as event}
+				{#each organizing.slice(0, 2) as event}
 					<button class="text-left" on:click={() => goto(`profile/events/${event.id}`)}>
-						<EventCard {event} />
+						<EventCard event={{
+							...event,
+							type: event.type as EventType
+						}} />
 					</button>
 				{/each}
 			</div>
@@ -183,12 +125,15 @@
 
 		<section>
 			<h2 class="mb-1 text-2xl font-semibold">Участвую</h2>
-			<p class="text-sm font-medium text-gray-500">{user.participating.length} мероприятий</p>
+			<p class="text-sm font-medium text-gray-500">{participating.length} мероприятий</p>
 
 			<div class="my-5 grid grid-cols-2 gap-4">
-				{#each user.participating.slice(0, 2) as event}
+				{#each participating.slice(0, 2) as event}
 					<button class="text-left" on:click={() => goto(`profile/events/${event.id}`)}>
-						<EventCard {event} />
+						<EventCard event={{
+							...event,
+							type: event.type as EventType
+						}} />
 					</button>
 				{/each}
 			</div>

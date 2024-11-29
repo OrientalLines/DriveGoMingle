@@ -1,3 +1,4 @@
+import { EventStatus } from '$lib/types';
 import { writable } from 'svelte/store';
 
 type Event = {
@@ -5,7 +6,7 @@ type Event = {
 	title: string;
 	authorUsername: string;
 	authorAvatar: string;
-	status: string;
+	status: EventStatus;
 	participants: number;
 	participantsLimit: number;
 	type: string;
@@ -26,7 +27,7 @@ export const events = writable<Event[]>([
 		title: 'Дрифт-соревнования',
 		authorUsername: 'kxrxh',
 		authorAvatar: '',
-		status: 'COMPLETED',
+		status: EventStatus.COMPLETED,
 		participants: 35,
 		participantsLimit: 35,
 		type: 'PUBLIC',
@@ -49,7 +50,7 @@ export const events = writable<Event[]>([
 		title: 'Мотофестиваль "Два колеса"',
 		authorUsername: 'bikerclub',
 		authorAvatar: '',
-		status: 'PLANNED',
+		status: EventStatus.PLANNED,
 		participants: 75,
 		participantsLimit: 100,
 		type: 'PUBLIC',
@@ -72,7 +73,7 @@ export const events = writable<Event[]>([
 		title: 'Мастер-класс по экстремальному вождению',
 		authorUsername: 'extremedriver',
 		authorAvatar: '/avatars/extremedriver.jpg',
-		status: 'PLANNED',
+		status: EventStatus.PLANNED,
 		participants: 22,
 		participantsLimit: 25,
 		type: 'PUBLIC',
@@ -95,7 +96,7 @@ export const events = writable<Event[]>([
 		title: 'Выставка тюнингованных авто',
 		authorUsername: 'tuningpro',
 		authorAvatar: '',
-		status: 'PLANNED',
+		status: EventStatus.PLANNED,
 		participants: 80,
 		participantsLimit: 100,
 		type: 'PUBLIC',
@@ -118,7 +119,7 @@ export const events = writable<Event[]>([
 		title: 'Гонки на внедорожниках',
 		authorUsername: 'offroadmaster',
 		authorAvatar: '',
-		status: 'COMPLETED',
+		status: EventStatus.COMPLETED,
 		participants: 25,
 		participantsLimit: 25,
 		type: 'PUBLIC',
@@ -140,7 +141,7 @@ export const events = writable<Event[]>([
 		title: 'Парад классических автомобилей',
 		authorUsername: 'retrocar',
 		authorAvatar: '',
-		status: 'PLANNED',
+		status: EventStatus.PLANNED,
 		participants: 45,
 		participantsLimit: 60,
 		type: 'PUBLIC',
@@ -163,7 +164,7 @@ export const events = writable<Event[]>([
 		title: 'Автомобильный квест по городу',
 		authorUsername: 'questmaster',
 		authorAvatar: '',
-		status: 'IN_PROGRESS',
+		status: EventStatus.IN_PROGRESS,
 		participants: 30,
 		participantsLimit: 40,
 		type: 'PRIVATE',
@@ -185,7 +186,7 @@ export const events = writable<Event[]>([
 		title: 'Семинар по безопасному вождению',
 		authorUsername: 'safetyexpert',
 		authorAvatar: '',
-		status: 'PLANNED',
+		status: EventStatus.PLANNED,
 		participants: 15,
 		participantsLimit: 30,
 		type: 'PUBLIC',
@@ -208,7 +209,7 @@ export function addEvent(eventData: Partial<Event>) {
 	const newEvent = {
 		...eventData,
 		id: Math.floor(Math.random() * 10000) + 10, // Random ID starting from 10
-		status: 'PLANNED',
+		status: EventStatus.PLANNED,
 		participants: 0,
 		authorUsername: 'kxrxh', // Hardcoded for prototype
 		authorAvatar: '',
@@ -218,4 +219,12 @@ export function addEvent(eventData: Partial<Event>) {
 
 	events.update((currentEvents) => [...currentEvents, newEvent as Event]);
 	return newEvent.id;
+}
+
+export function leaveEvent(eventId: number) {
+	events.update((currentEvents) =>
+		currentEvents.map((event) =>
+			event.id === eventId ? { ...event, isParticipant: false } : event
+		)
+	);
 }

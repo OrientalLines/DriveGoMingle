@@ -18,7 +18,7 @@
 	}
 
 	const onBack = () => {
-		goto('/app/profile', { replaceState: false });
+		goto('/app/profile', { replaceState: true });
 	};
 </script>
 

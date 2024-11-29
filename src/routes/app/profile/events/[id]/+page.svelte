@@ -1,8 +1,18 @@
 <script lang="ts">
-	import { Calendar, ImagePlus, MapPin, MessageCircle, MoreVertical, Pencil, Users } from 'lucide-svelte';
+	import {
+		Calendar,
+		ImagePlus,
+		MapPin,
+		MessageCircle,
+		MoreVertical,
+		Pencil,
+		Users
+	} from 'lucide-svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { Browser } from '@capacitor/browser';
 	import { goto } from '$app/navigation';
+	import Dialog from '$lib/components/Dialog.svelte';
+	import { leaveEvent } from '$lib/stores/events';
 
 	const user = 'kxrxh';
 
@@ -11,6 +21,8 @@
 
 	let activeTab: 'info' | 'participants' = 'info';
 	let searchQuery = '';
+
+	let showDeleteDialog = false;
 
 	const dummyParticipants = [
 		{ id: 1, name: 'Александр Петров', avatar: '' },
@@ -37,6 +49,17 @@
 			console.error('Error opening map:', error);
 		}
 	}
+
+	function handleDeleteEvent() {
+		console.log('Deleting event:', event?.id);
+		showDeleteDialog = false;
+	}
+
+	function handleLeaveEvent() {
+		if (event?.id) {
+			leaveEvent(event.id);
+		}
+	}
 </script>
 
 <div class="space-y-8">
@@ -45,9 +68,14 @@
 		<BackButton />
 
 		<div class="flex items-center gap-2">
-			<button class="hover:bg-muted/10 rounded-full p-2">
-				<Pencil size={20} />
-			</button>
+			{#if event?.authorUsername === user}
+				<button
+					class="hover:bg-muted/10 rounded-full p-2"
+					on:click={() => goto(`/app/profile/events/${event.id}/edit`)}
+				>
+					<Pencil size={20} />
+				</button>
+			{/if}
 
 			<button class="hover:bg-muted/10 rounded-full p-2">
 				<MoreVertical size={20} />
@@ -113,7 +141,7 @@
 						<div
 							class="flex h-10 w-10 items-center justify-center rounded-full bg-light-green/30 transition-all duration-300 hover:bg-light-green/40"
 						>
-							<MapPin class="h-5 w-5 text-light-green" />	
+							<MapPin class="h-5 w-5 text-light-green" />
 						</div>
 						<div class="flex flex-col">
 							<span class="text-xs font-medium text-white/60">Место проведения</span>
@@ -147,7 +175,9 @@
 						</div>
 						<div class="flex flex-col">
 							<span class="text-xs font-medium text-white/60">Участники</span>
-							<span class="text-sm text-white">До {event?.participantsLimit || 'Не ограничено'} человек</span>
+							<span class="text-sm text-white"
+								>До {event?.participantsLimit || 'Не ограничено'} человек</span
+							>
 						</div>
 					</div>
 				</div>
@@ -258,16 +288,36 @@
 
 			{#if event?.authorUsername === user}
 				<button
-					class="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-red-400 py-3 text-white"
+					class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-red-400/20 bg-red-400/10 py-4 text-red-400 transition-all hover:bg-red-400/20"
+					on:click={() => (showDeleteDialog = true)}
 				>
 					<span class="font-medium">Отменить мероприятие</span>
 				</button>
+				<Dialog
+					open={showDeleteDialog}
+					title="Отменить мероприятие"
+					description="Вы уверены, что хотите отменить это мероприятие? Это действие нельзя отменить."
+					onclose={() => (showDeleteDialog = false)}
+				>
+					<button
+						class="w-full rounded-lg bg-deactivated/20 px-4 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-deactivated/20 sm:w-auto"
+						on:click={() => (showDeleteDialog = false)}
+					>
+						Нет, не отменять
+					</button>
+					<button
+						class="w-full rounded-lg bg-red-500/90 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-500/80 sm:w-auto"
+						on:click={handleDeleteEvent}
+					>
+						Да, отменить
+					</button>
+				</Dialog>
 			{:else if event?.isParticipant}
 				<button
-					class="bg-muted text-muted-foreground flex w-full items-center justify-center gap-2 rounded-lg bg-deactivated/10 py-3"
-					disabled
+					class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-red-400/20 bg-red-400/10 py-4 text-red-400 transition-all hover:bg-red-400/20"
+					on:click={handleLeaveEvent}
 				>
-					<span class="font-medium text-deactivated">Вы уже участвуете</span>
+					<span class="font-medium">Покинуть мероприятие</span>
 				</button>
 			{:else}
 				<button
