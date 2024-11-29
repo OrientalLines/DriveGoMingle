@@ -23,6 +23,7 @@
 	let searchQuery = '';
 
 	let showDeleteDialog = false;
+	let showLeaveDialog = false;
 
 	const dummyParticipants = [
 		{ id: 1, name: 'Александр Петров', avatar: '' },
@@ -58,6 +59,8 @@
 	function handleLeaveEvent() {
 		if (event?.id) {
 			leaveEvent(event.id);
+			showLeaveDialog = false;
+			goto('/app/profile');
 		}
 	}
 </script>
@@ -315,10 +318,29 @@
 			{:else if event?.isParticipant}
 				<button
 					class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-red-400/20 bg-red-400/10 py-4 text-red-400 transition-all hover:bg-red-400/20"
-					on:click={handleLeaveEvent}
+					on:click={() => (showLeaveDialog = true)}
 				>
 					<span class="font-medium">Покинуть мероприятие</span>
 				</button>
+				<Dialog
+					open={showLeaveDialog}
+					title="Покинуть мероприятие"
+					description="Вы уверены, что хотите покинуть это мероприятие? Вы сможете присоединиться снова позже."
+					onclose={() => (showLeaveDialog = false)}
+				>
+					<button
+						class="w-full rounded-lg bg-deactivated/20 px-4 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-deactivated/20 sm:w-auto"
+						on:click={() => (showLeaveDialog = false)}
+					>
+						Нет, остаться
+					</button>
+					<button
+						class="w-full rounded-lg bg-red-500/90 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-500/80 sm:w-auto"
+						on:click={handleLeaveEvent}
+					>
+						Да, покинуть
+					</button>
+				</Dialog>
 			{:else}
 				<button
 					class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 text-white transition-colors"

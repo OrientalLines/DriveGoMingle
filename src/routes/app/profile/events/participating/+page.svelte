@@ -4,43 +4,12 @@
 	import EventCard from '$lib/components/EventCard.svelte';
 	import { EventStatus, EventType } from '$lib/types';
 	import { ArrowLeft, ArrowRight, Ellipsis } from 'lucide-svelte';
+	import { events } from '$lib/stores/events';
 
 	let view: 'list' | 'calendar' = 'list';
 
-	const events = [
-		{
-			title: 'Дрифт-соревнования',
-			status: EventStatus.COMPLETED,
-			participants: 35,
-			participantsLimit: 35,
-			type: EventType.PUBLIC,
-			date: new Date('2024-03-22')
-		},
-		{
-			title: 'Мотофестиваль "Два колеса"',
-			status: EventStatus.PLANNED,
-			participants: 75,
-			participantsLimit: 100,
-			type: EventType.PUBLIC,
-			date: new Date('2024-05-10')
-		},
-		{
-			title: 'Ночной автопробег',
-			status: EventStatus.IN_PROGRESS,
-			participants: 55,
-			participantsLimit: 60,
-			type: EventType.PRIVATE,
-			date: new Date('2024-07-05')
-		},
-		{
-			title: 'Мастер-класс по экстремальному вождению',
-			status: EventStatus.PLANNED,
-			participants: 22,
-			participantsLimit: 25,
-			type: EventType.PUBLIC,
-			date: new Date('2024-09-18')
-		}
-	];
+	// Subscribe to the events store and filter for events where isParticipant is true
+	$: participatingEvents = $events.filter((event) => event.isParticipant);
 
 	const months = [
 		'Янв',
@@ -59,9 +28,10 @@
 	let currentDate = new Date();
 	$: currentMonth = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
 
-	$: days = getDaysInMonth(currentDate, events);
+	// Update the reactive days statement
+	$: days = getDaysInMonth(currentDate, participatingEvents);
 
-	function getDaysInMonth(date: Date, events: any[]) {
+	function getDaysInMonth(date: Date, eventsList: any[]) {
 		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
 		const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 		const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0);
@@ -74,12 +44,11 @@
 		}));
 
 		const monthDays = Array.from({ length: lastDay.getDate() }, (_, i) => {
-			const currentDay = new Date(date.getFullYear(), date.getMonth(), i + 1);
-			const event = events.find(
+			const event = eventsList.find(
 				(e) =>
-					e.date.getDate() === i + 1 &&
-					e.date.getMonth() === date.getMonth() &&
-					e.date.getFullYear() === date.getFullYear()
+					new Date(e.date).getDate() === i + 1 &&
+					new Date(e.date).getMonth() === date.getMonth() &&
+					new Date(e.date).getFullYear() === date.getFullYear()
 			);
 			return {
 				day: i + 1,
@@ -165,13 +134,13 @@
 			</button>
 		</div>
 
-		<h1 class="mb-6 text-2xl font-semibold">Организую</h1>
+		<h1 class="mb-6 text-2xl font-semibold">Участвую</h1>
 	</div>
 
 	{#if view === 'list'}
 		<!-- Events Grid -->
 		<div class="grid grid-cols-2 gap-4">
-			{#each events.sort((a, b) => (a.status === EventStatus.COMPLETED ? 1 : -1)) as event}
+			{#each participatingEvents.sort( (a, b) => (a.status === EventStatus.COMPLETED ? 1 : -1) ) as event}
 				<EventCard {event} />
 			{/each}
 		</div>

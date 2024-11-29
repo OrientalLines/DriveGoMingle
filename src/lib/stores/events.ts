@@ -1,4 +1,4 @@
-import { EventStatus } from '$lib/types';
+import { EventStatus, EventType } from '$lib/types';
 import { writable } from 'svelte/store';
 
 type Event = {
@@ -9,7 +9,7 @@ type Event = {
 	status: EventStatus;
 	participants: number;
 	participantsLimit: number;
-	type: string;
+	type: EventType;
 	location: string;
 	date: string;
 	time: string;
@@ -30,7 +30,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.COMPLETED,
 		participants: 35,
 		participantsLimit: 35,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Автодром "Скорость", Санкт-Петербург',
 		date: '2024-03-15',
 		time: '14:00',
@@ -53,7 +53,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.PLANNED,
 		participants: 75,
 		participantsLimit: 100,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Парк 300-летия, Санкт-Петербург',
 		date: '2024-05-20',
 		time: '12:00',
@@ -76,7 +76,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.PLANNED,
 		participants: 22,
 		participantsLimit: 25,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Центр водительского мастерства, Пушкин',
 		date: '2024-06-05',
 		time: '10:00',
@@ -99,7 +99,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.PLANNED,
 		participants: 80,
 		participantsLimit: 100,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Экспофорум, Санкт-Петербург',
 		date: '2024-04-20',
 		time: '11:00',
@@ -122,7 +122,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.COMPLETED,
 		participants: 25,
 		participantsLimit: 25,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Трасса "Грязь и слава", Ленинградская область',
 		date: '2024-03-01',
 		time: '09:00',
@@ -144,7 +144,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.PLANNED,
 		participants: 45,
 		participantsLimit: 60,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Невский проспект, Санкт-Петербург',
 		date: '2024-07-15',
 		time: '13:00',
@@ -167,7 +167,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.IN_PROGRESS,
 		participants: 30,
 		participantsLimit: 40,
-		type: 'PRIVATE',
+		type: EventType.PRIVATE,
 		location: 'Старт: Московская площадь, Санкт-Петербург',
 		date: '2024-04-05',
 		time: '15:00',
@@ -189,7 +189,7 @@ export const events = writable<Event[]>([
 		status: EventStatus.PLANNED,
 		participants: 15,
 		participantsLimit: 30,
-		type: 'PUBLIC',
+		type: EventType.PUBLIC,
 		location: 'Автошкола "Профессионал", Санкт-Петербург',
 		date: '2024-05-10',
 		time: '16:00',

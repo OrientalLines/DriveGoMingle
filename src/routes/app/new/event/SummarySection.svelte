@@ -1,8 +1,9 @@
 <script lang="ts">
 	import BackButton from '$lib/components/BackButton.svelte';
-	import { ArrowLeft, Calendar, MapPin, Users } from 'lucide-svelte';
+	import { Calendar, MapPin, Users } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { addEvent } from '$lib/stores/events';
+	import { EventType } from '$lib/types';
 
 	export let eventData: any;
 	export let users: any;
@@ -25,13 +26,15 @@
 			location: eventData.address,
 			date: eventData.date,
 			time: eventData.time,
-			type: eventData.isPublic ? 'PUBLIC' : 'PRIVATE',
+			type: eventData.isPublic ? EventType.PUBLIC : EventType.PRIVATE,
 			participantsLimit: 100, // Default value for prototype
-			categories: [], // Add if you have categories in your form
 			photos: [] // Add if you have photos in your form
 		});
 
-		await goto(`/profile/events/${newEventId}`);
+		await goto(`/app/profile/events/${newEventId}`, {
+			replaceState: false
+		});
+		history.pushState(null, '', '/app/profile/events/organizing');
 	}
 </script>
 
@@ -41,7 +44,7 @@
 		<h1 class="w-full text-center text-2xl font-bold">Проверьте детали</h1>
 	</header>
 
-	<main class="space-y-6 rounded-xl  p-4">
+	<main class="space-y-6 rounded-xl p-4">
 		<!-- Event Info -->
 		<div class="flex items-start gap-4">
 			<div
@@ -78,7 +81,7 @@
 					<div
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-light-green/30 transition-all duration-300 hover:bg-light-green/40"
 					>
-						<MapPin class="h-5 w-5 text-light-green" />	
+						<MapPin class="h-5 w-5 text-light-green" />
 					</div>
 					<div class="flex flex-col">
 						<span class="text-xs font-medium text-white/60">Место проведения</span>

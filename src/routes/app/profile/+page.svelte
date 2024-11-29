@@ -116,7 +116,7 @@
 				{/each}
 			</div>
 			<button
-				on:click={handleViewAllParticipating}
+				on:click={handleViewAllOrganizing}
 				class="w-full rounded-xl border-2 border-primary px-4 py-3 font-medium text-white"
 			>
 				Посмотреть все
@@ -139,7 +139,7 @@
 			</div>
 			<button
 				class="w-full rounded-xl border-2 border-secondary px-4 py-3 font-medium text-white"
-				on:click={handleViewAllOrganizing}
+				on:click={handleViewAllParticipating}
 			>
 				Посмотреть все
 			</button>
