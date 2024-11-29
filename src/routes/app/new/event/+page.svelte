@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+	import { addEvent } from '$lib/stores/events';
 	import EventForm from './EventForm.svelte';
 	import InviteSection from './InviteSection.svelte';
 	import SummarySection from './SummarySection.svelte';
@@ -6,22 +8,25 @@
 	let eventData = {
 		title: '',
 		date: '',
+		time: '',
 		address: '',
-		isPublic: false
+		description: '',
+		isPublic: true,
+		participantsLimit: 100
 	};
 
 	let users = [
-		{ id: 1, name: 'Ryan Gosling', role: 'The coolest driver', selected: false },
-		{ id: 2, name: 'Bob Gooal', role: 'Dynamic Security Technician', selected: false },
-		{ id: 3, name: 'Alt Girl', role: 'The real one from gosuslugi', selected: false },
+		{ id: 1, name: 'Ryan Gosling', status: 'The coolest driver', selected: false },
+		{ id: 2, name: 'Bob Gooal', status: 'Dynamic Security Technician', selected: false },
+		{ id: 3, name: 'Alt Girl', status: 'The real one from gosuslugi', selected: false },
 	];
 
 	let showInviteSection = false;
 	let showSummarySection = false;
 
 	function handleSubmit() {
-		console.log('Event data:', eventData);
-		// TODO: Handle form submission
+		const eventId = addEvent(eventData);
+		goto(`/app/profile/events/${eventId}`);
 	}
 </script>
 
@@ -43,7 +48,7 @@
 	/>
 {:else}
 	<EventForm
-		{eventData}
+		eventData={eventData}
 		onNext={() => showInviteSection = true}
 	/>
 {/if}

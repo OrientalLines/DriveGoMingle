@@ -82,7 +82,6 @@
 		}));
 
 		const monthDays = Array.from({ length: lastDay.getDate() }, (_, i) => {
-			const currentDay = new Date(date.getFullYear(), date.getMonth(), i + 1);
 			const event = events.find(
 				(e) =>
 					e.date.getDate() === i + 1 &&

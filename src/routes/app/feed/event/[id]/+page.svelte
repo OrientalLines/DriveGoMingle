@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Calendar, Map, MessageCircle } from 'lucide-svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import Toast from '$lib/components/Toast.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 

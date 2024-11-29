@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Calendar, ImagePlus, MapPin, MessageCircle, MoreVertical, Pencil } from 'lucide-svelte';
+	import { Calendar, ImagePlus, MapPin, MessageCircle, MoreVertical, Pencil, Users } from 'lucide-svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { Browser } from '@capacitor/browser';
-	import { fade } from 'svelte/transition';
+	import { goto } from '$app/navigation';
 
 	const user = 'kxrxh';
 
@@ -105,23 +105,51 @@
 				</div>
 			</div>
 
-			<!-- Location & Date -->
-			<div class="flex flex-col gap-3 rounded-xl bg-background-secondary/50 p-4">
-				<button
-					class="text-muted-foreground flex items-center gap-2 text-light-green"
-					on:click={() => openLocation(event?.location || 'St. Petersburg')}
-					on:keydown={(e) => e.key === 'Enter' && openLocation(event?.location || 'St. Petersburg')}
-				>
-					<MapPin size={24} />
-					<span>{event?.location || 'St. Petersburg'}</span>
-				</button>
-				<div class="text-muted-foreground flex items-center gap-2 text-secondary">
-					<Calendar size={24} />
-					<span
-						>{event?.date
-							? new Date(event.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })
-							: '10 ноя'}</span
-					>
+			<!-- Event Details -->
+			<div class="flex flex-col gap-4 rounded-xl bg-background-secondary/50 p-4 shadow-lg">
+				<h3 class="mb-2 text-xl font-semibold text-white/90">Детали мероприятия</h3>
+				<div class="flex flex-col gap-3">
+					<div class="flex items-center gap-3">
+						<div
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-light-green/30 transition-all duration-300 hover:bg-light-green/40"
+						>
+							<MapPin class="h-5 w-5 text-light-green" />	
+						</div>
+						<div class="flex flex-col">
+							<span class="text-xs font-medium text-white/60">Место проведения</span>
+							<span class="text-sm text-white">{event?.location || 'Место не указано'}</span>
+						</div>
+					</div>
+					<div class="flex items-center gap-3">
+						<div
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/30 transition-all duration-300 hover:bg-secondary/40"
+						>
+							<Calendar class="h-5 w-5 text-secondary" />
+						</div>
+						<div class="flex flex-col">
+							<span class="text-xs font-medium text-white/60">Дата и время</span>
+							<span class="text-sm text-white">
+								{event?.date
+									? new Date(event.date).toLocaleDateString('ru-RU', {
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric'
+										})
+									: 'Дата не указана'} в {event?.time || 'Время не указано'}
+							</span>
+						</div>
+					</div>
+					<div class="flex items-center gap-3">
+						<div
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/30 transition-all duration-300 hover:bg-primary/40"
+						>
+							<Users class="h-5 w-5 text-primary" />
+						</div>
+						<div class="flex flex-col">
+							<span class="text-xs font-medium text-white/60">Участники</span>
+							<span class="text-sm text-white">До {event?.participantsLimit || 'Не ограничено'} человек</span>
+						</div>
+					</div>
 				</div>
 			</div>
 

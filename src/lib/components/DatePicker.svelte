@@ -97,6 +97,13 @@
 	function nextMonth() {
 		currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
 	}
+
+	function isDateDisabled(day: number, month: number, year: number): boolean {
+		const date = new Date(year, month, day);
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		return date < today;
+	}
 </script>
 
 <div class="relative" bind:this={datePickerElement}>
@@ -156,7 +163,14 @@
 				{#each getPreviousMonthDays(currentDate.getFullYear(), currentDate.getMonth()) as { day, month, year }}
 					<button
 						type="button"
-						class="rounded-full p-1.5 text-sm text-deactivated opacity-50 transition-colors hover:bg-secondary/10"
+						disabled={isDateDisabled(day, month, year)}
+						class="rounded-full p-1.5 text-sm text-deactivated opacity-50 transition-colors {!isDateDisabled(
+							day,
+							month,
+							year
+						)
+							? 'hover:bg-secondary/10'
+							: 'cursor-not-allowed'}"
 						on:click={() => handleDateSelect(day, month, year)}
 					>
 						{day}
@@ -168,12 +182,15 @@
 					{@const day = i + 1}
 					<button
 						type="button"
+						disabled={isDateDisabled(day, currentDate.getMonth(), currentDate.getFullYear())}
 						class="rounded-full p-1.5 text-sm transition-colors
 							{selectedDate?.getDate() === day &&
 						selectedDate?.getMonth() === currentDate.getMonth() &&
 						selectedDate?.getFullYear() === currentDate.getFullYear()
 							? 'bg-secondary text-white'
-							: 'hover:bg-secondary/10 hover:text-secondary'}"
+							: isDateDisabled(day, currentDate.getMonth(), currentDate.getFullYear())
+								? 'cursor-not-allowed opacity-50'
+								: 'hover:bg-secondary/10 hover:text-secondary'}"
 						on:click={() => handleDateSelect(day)}
 					>
 						{day}
@@ -184,7 +201,14 @@
 				{#each getNextMonthDays(currentDate.getFullYear(), currentDate.getMonth()) as { day, month, year }}
 					<button
 						type="button"
-						class="rounded-full p-1.5 text-sm text-deactivated opacity-50 transition-colors hover:bg-secondary/10"
+						disabled={isDateDisabled(day, month, year)}
+						class="rounded-full p-1.5 text-sm text-deactivated opacity-50 transition-colors {!isDateDisabled(
+							day,
+							month,
+							year
+						)
+							? 'hover:bg-secondary/10'
+							: 'cursor-not-allowed'}"
 						on:click={() => handleDateSelect(day, month, year)}
 					>
 						{day}
