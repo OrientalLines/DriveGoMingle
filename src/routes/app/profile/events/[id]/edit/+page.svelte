@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import BackButton from '$lib/components/BackButton.svelte';
-	import { Calendar, MapPin, Users } from 'lucide-svelte';
+	import { MapPin, Users } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import DatePicker from '$lib/components/DatePicker.svelte';
 	import { events } from '$lib/stores/events';

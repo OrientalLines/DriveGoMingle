@@ -8,12 +8,6 @@
 	// Replace mock data with actual data from page store
 	const event = $page.data.event;
 
-	// Parse participants from progress string
-	$: participants = {
-		current: parseInt(event?.progress?.split('/')[0] || '0'),
-		max: parseInt(event?.progress?.split('/')[1] || '0')
-	};
-
 	let activeTab: 'info' | 'participants' = 'info';
 	let isLoading = true;
 
@@ -40,8 +34,10 @@
 
 	let searchQuery = '';
 	let showToast = false;
+	let hasJoined = false;
 
 	function handleJoinEvent() {
+		hasJoined = true;
 		showToast = true;
 		setTimeout(() => {
 			showToast = false;
@@ -103,10 +99,13 @@
 						<h1 class="text-xl font-bold">{event.title}</h1>
 						<p class="mt-1 text-sm text-deactivated">{event.description}</p>
 						<button
-							class="mt-4 rounded-full bg-primary px-8 py-3 font-bold text-white"
+							class="mt-4 rounded-full px-8 py-3 font-bold text-white {hasJoined
+								? 'cursor-not-allowed bg-gray-600'
+								: 'bg-primary'}"
 							on:click={handleJoinEvent}
+							disabled={hasJoined}
 						>
-							Участвовать
+							{hasJoined ? 'Вы участвуете' : 'Участвовать'}
 						</button>
 					</div>
 					<div class="aspect-[9/16] overflow-hidden rounded-2xl border-2">

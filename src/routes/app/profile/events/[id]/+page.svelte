@@ -13,7 +13,6 @@
 	import { goto } from '$app/navigation';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { leaveEvent } from '$lib/stores/events';
-	import { page } from '$app/stores';
 
 	const user = 'kxrxh';
 

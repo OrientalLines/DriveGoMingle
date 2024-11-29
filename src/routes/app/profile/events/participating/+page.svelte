@@ -2,14 +2,14 @@
 	import { goto } from '$app/navigation';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import EventCard from '$lib/components/EventCard.svelte';
-	import { EventStatus, EventType } from '$lib/types';
+	import { EventStatus } from '$lib/types';
 	import { ArrowLeft, ArrowRight, Ellipsis } from 'lucide-svelte';
 	import { events } from '$lib/stores/events';
 
 	let view: 'list' | 'calendar' = 'list';
 
 	// Subscribe to the events store and filter for events where isParticipant is true
-	$: participatingEvents = $events.filter((event) => event.isParticipant);
+	$: participatingEvents = $events.filter((event) => event.authorUsername != 'kxrxh');
 
 	const months = [
 		'Янв',

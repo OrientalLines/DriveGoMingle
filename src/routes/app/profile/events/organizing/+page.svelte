@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import EventCard from '$lib/components/EventCard.svelte';
-	import { EventStatus, EventType } from '$lib/types';
+	import { EventStatus } from '$lib/types';
 	import { ArrowLeft, ArrowRight, Ellipsis } from 'lucide-svelte';
 	import { events } from '$lib/stores/events';
 
