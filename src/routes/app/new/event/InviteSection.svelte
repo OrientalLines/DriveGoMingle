@@ -48,7 +48,7 @@
 							</div>
 							<div>
 								<p class="font-medium text-white">{user.name}</p>
-								<p class="text-sm text-deactivated">{user.role}</p>
+								<p class="text-sm text-deactivated">{user.status}</p>
 							</div>
 						</div>
 						<label class="relative inline-flex cursor-pointer items-center">

@@ -5,8 +5,8 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	export let currentView: 'feed' | 'profile' | 'chats';
-	export let onViewChange: (view: 'feed' | 'profile' | 'chats') => void;
+	export let currentView: 'feed' | 'profile' | 'chats' | 'new';
+	export let onViewChange: (view: 'feed' | 'profile' | 'chats' | 'new') => void;
 
 	const navItems = [
 		{ label: 'ЧАТЫ', icon: MessageSquare, view: 'chats' },
@@ -19,17 +19,17 @@
 	const createOptions = [
 		{
 			label: 'Создать мероприятие',
-			action: () => goto('/app/new/event'),
+			action: () => goto('/app/new/event', { replaceState: true }),
 			icon: '⌚' // You might want to replace this with a proper icon component
 		},
 		{
 			label: 'Создать группу',
-			action: () => goto('/app/new/chat'),
+			action: () => goto('/app/new/chat', { replaceState: true }),
 			icon: '👥' // You might want to replace this with a proper icon component
 		}
 	];
 
-	function handleViewChange(view: 'feed' | 'profile' | 'chats') {
+	function handleViewChange(view: 'feed' | 'profile' | 'chats' | 'new') {
 		onViewChange(view);
 	}
 

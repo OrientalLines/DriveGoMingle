@@ -6,7 +6,7 @@
 	import SummarySection from './SummarySection.svelte';
 
 	let eventData = {
-		title: '',
+		title: '',	
 		date: '',
 		time: '',
 		address: '',

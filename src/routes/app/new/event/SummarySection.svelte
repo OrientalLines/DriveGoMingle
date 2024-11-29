@@ -1,7 +1,7 @@
 <script lang="ts">
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { Calendar, MapPin, Users } from 'lucide-svelte';
-	import { goto } from '$app/navigation';
+	import { goto, pushState } from '$app/navigation';
 	import { addEvent } from '$lib/stores/events';
 	import { EventType } from '$lib/types';
 
@@ -27,14 +27,12 @@
 			date: eventData.date,
 			time: eventData.time,
 			type: eventData.isPublic ? EventType.PUBLIC : EventType.PRIVATE,
-			participantsLimit: 100, // Default value for prototype
-			photos: [] // Add if you have photos in your form
+			participantsLimit: 100,
+			photos: []
 		});
 
-		await goto(`/app/profile/events/${newEventId}`, {
-			replaceState: false
-		});
-		history.pushState(null, '', '/app/profile/events/organizing');
+		// I FUCKING HATE THIS STUPID FUCKING SVELTE
+		goto(`/app/profile/events/${newEventId}`);
 	}
 </script>
 

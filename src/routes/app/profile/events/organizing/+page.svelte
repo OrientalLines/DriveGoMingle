@@ -140,7 +140,9 @@
 		<!-- Events Grid -->
 		<div class="grid grid-cols-2 gap-4">
 			{#each organizingEvents.sort((a, b) => (a.status === EventStatus.COMPLETED ? 1 : -1)) as event}
-				<EventCard event={{...event, type: event.type as EventType}} />
+				<button class="text-left" on:click={() => goto(`/app/profile/events/${event.id}`)}>
+					<EventCard event={event} />
+				</button>
 			{/each}
 		</div>
 	{:else}

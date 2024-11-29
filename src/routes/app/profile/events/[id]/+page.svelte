@@ -13,6 +13,7 @@
 	import { goto } from '$app/navigation';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { leaveEvent } from '$lib/stores/events';
+	import { page } from '$app/stores';
 
 	const user = 'kxrxh';
 
@@ -60,7 +61,7 @@
 		if (event?.id) {
 			leaveEvent(event.id);
 			showLeaveDialog = false;
-			goto('/app/profile');
+			history.back();
 		}
 	}
 </script>
