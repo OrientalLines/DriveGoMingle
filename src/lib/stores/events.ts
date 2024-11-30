@@ -72,7 +72,7 @@ export const events = writable<Event[]>([
 		id: 4,
 		title: 'Мастер-класс по экстремальному вождению',
 		authorUsername: 'extremedriver',
-		authorAvatar: '/avatars/extremedriver.jpg',
+		authorAvatar: '',
 		status: EventStatus.PLANNED,
 		participants: 22,
 		participantsLimit: 25,

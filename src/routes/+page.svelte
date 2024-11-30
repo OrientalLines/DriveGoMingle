@@ -3,16 +3,19 @@
 	import { goto } from '$app/navigation';
 	import Splash from './splash.svelte';
 	import { fade } from 'svelte/transition';
+	import { persisted } from '$lib/stores/persisted';
 
+	// Use the same persisted store
+	const isAuthenticated = persisted('isAuthenticated', false);
 	let showSplash = true;
-	let isAuthenticated = true; // Replace with your actual auth logic
 
 	onMount(() => {
-		// Check authentication first
-		if (isAuthenticated) {
-			handleNavigation('/app');
-			return;
-		}
+		// Subscribe to authentication state
+		isAuthenticated.subscribe(value => {
+			if (value) {
+				handleNavigation('/app');
+			}
+		});
 
 		// If not authenticated, handle onboarding flow
 		const hasVisited = localStorage.getItem('hasVisitedBefore');

@@ -1,18 +1,25 @@
 <script lang="ts">
 	import {
 		Calendar,
+		ExternalLink,
 		ImagePlus,
+		Link2,
 		MapPin,
 		MessageCircle,
 		MoreVertical,
 		Pencil,
-		Users
+		RemoveFormatting,
+		Share2,
+		Users,
+		UserX
 	} from 'lucide-svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { Browser } from '@capacitor/browser';
 	import { goto } from '$app/navigation';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { leaveEvent } from '$lib/stores/events';
+	import { EventStatus } from '$lib/types.js';
+	import { toast } from '$lib/stores/toast';
 
 	const user = 'kxrxh';
 
@@ -24,8 +31,8 @@
 
 	let showDeleteDialog = false;
 	let showLeaveDialog = false;
-
-	const dummyParticipants = [
+	let showShareMenu = false;
+	let dummyParticipants = [
 		{ id: 1, name: 'Александр Петров', avatar: '' },
 		{ id: 2, name: 'Мария Иванова', avatar: '' },
 		{ id: 3, name: 'Дмитрий Сидоров', avatar: '' }
@@ -52,14 +59,25 @@
 	}
 
 	function handleDeleteEvent() {
-		console.log('Deleting event:', event?.id);
-		showDeleteDialog = false;
+		if (event?.id) {
+			leaveEvent(event.id);
+			showDeleteDialog = false;
+			toast.show({
+				message: 'Мероприятие успешно отменено',
+				type: 'success'
+			});
+			history.back();
+		}
 	}
 
 	function handleLeaveEvent() {
 		if (event?.id) {
 			leaveEvent(event.id);
 			showLeaveDialog = false;
+			toast.show({
+				message: 'Вы покинули мероприятие',
+				type: 'success'
+			});
 			history.back();
 		}
 	}
@@ -80,9 +98,52 @@
 				</button>
 			{/if}
 
-			<button class="hover:bg-muted/10 rounded-full p-2">
-				<MoreVertical size={20} />
-			</button>
+			<div class="relative">
+				<button
+					class="hover:bg-muted/10 rounded-full p-2 {event?.status !== EventStatus.PLANNED
+						? 'cursor-not-allowed opacity-50'
+						: ''}"
+					on:click={() => event?.status === EventStatus.PLANNED && (showShareMenu = !showShareMenu)}
+					disabled={event?.status !== EventStatus.PLANNED}
+				>
+					<Share2 size={20} />
+				</button>
+
+				{#if showShareMenu}
+					<div
+						class="absolute right-0 top-full mt-2 w-48 rounded-lg bg-background-secondary shadow-lg"
+					>
+						<button
+							class="flex w-full items-center gap-2 px-4 py-2 text-sm text-white hover:bg-background-secondary/50"
+							on:click={() => {
+								navigator.clipboard.writeText(window.location.href);
+								toast.show({
+									message: 'Ссылка на мероприятие скопирована',
+									type: 'success'
+								});
+								showShareMenu = false;
+							}}
+						>
+							<Link2 size={16} />
+							<span>Скопировать ссылку</span>
+						</button>
+						<button
+							class="flex w-full items-center gap-2 px-4 py-2 text-sm text-white hover:bg-background-secondary/50"
+							on:click={() => {
+								// Handle send to chat logic here
+								showShareMenu = false;
+								toast.show({
+									message: 'Отправлено в чат',
+									type: 'success'
+								});
+							}}
+						>
+							<MessageCircle size={16} />
+							<span>Отправить в чат</span>
+						</button>
+					</div>
+				{/if}
+			</div>
 		</div>
 	</header>
 
@@ -148,7 +209,13 @@
 						</div>
 						<div class="flex flex-col">
 							<span class="text-xs font-medium text-white/60">Место проведения</span>
-							<span class="text-sm text-white">{event?.location || 'Место не указано'}</span>
+							<button
+								class="cursor-pointer text-sm text-white hover:underline"
+								on:click={() => openLocation(event?.location || '')}
+							>
+								{event?.location || 'Место не указано'}
+								<ExternalLink class="h-3.5 w-3.5 text-white/60" />
+							</button>
 						</div>
 					</div>
 					<div class="flex items-center gap-3">
@@ -289,7 +356,7 @@
 				</button>
 			</div>
 
-			{#if event?.authorUsername === user}
+			{#if event?.authorUsername === user && event?.status === EventStatus.PLANNED}
 				<button
 					class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-red-400/20 bg-red-400/10 py-4 text-red-400 transition-all hover:bg-red-400/20"
 					on:click={() => (showDeleteDialog = true)}
@@ -315,7 +382,7 @@
 						Да, отменить
 					</button>
 				</Dialog>
-			{:else if event?.isParticipant}
+			{:else if event?.authorUsername !== user && event?.status === EventStatus.PLANNED}
 				<button
 					class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-red-400/20 bg-red-400/10 py-4 text-red-400 transition-all hover:bg-red-400/20"
 					on:click={() => (showLeaveDialog = true)}
@@ -341,7 +408,7 @@
 						Да, покинуть
 					</button>
 				</Dialog>
-			{:else}
+			{:else if event?.status === EventStatus.PLANNED}
 				<button
 					class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 text-white transition-colors"
 				>
@@ -387,8 +454,25 @@
 							</div>
 							<span class="text-lg font-semibold">{participant.name}</span>
 						</div>
-						<div class="text-deactivated">
-							<MessageCircle class="h-5 w-5" />
+						<div class="flex items-center gap-3">
+							<button class="text-deactivated hover:text-white">
+								<MessageCircle class="h-5 w-5" />
+							</button>
+							{#if event?.authorUsername === user}
+								<button
+									class="text-red-400 hover:text-red-300"
+									on:click={() => {
+										// Remove user from the list
+										dummyParticipants = dummyParticipants.filter((p) => p.id !== participant.id);
+										toast.show({
+											message: `${participant.name} удален из мероприятия`,
+											type: 'success'
+										});
+									}}
+								>
+									<UserX class="h-5 w-5" />
+								</button>
+							{/if}
 						</div>
 					</div>
 				{/each}

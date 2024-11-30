@@ -1,16 +1,19 @@
 <script lang="ts">
+	import { toast } from '$lib/stores/toast';
 	import { fly } from 'svelte/transition';
-
-	export let message: string;
-	export let visible = false;
 </script>
 
-{#if visible}
-	<div class="fixed left-0 right-0 top-0 z-50" transition:fly={{ y: -10, duration: 300 }}>
+<div class="fixed left-0 right-0 top-0 z-50 flex flex-col gap-2">
+	{#each $toast as notification (notification.id)}
 		<div
-			class="flex items-center justify-center gap-2 rounded-b-2xl bg-purple-500 p-4 text-white shadow-lg"
+			transition:fly={{ y: -100, duration: 300 }}
+			class="w-full rounded-b-xl bg-background-secondary p-4 shadow-lg"
+			class:bg-green-500={notification.type === 'success'}
+			class:bg-red-500={notification.type === 'error'}
+			class:bg-blue-500={notification.type === 'info'}
+			class:bg-yellow-500={notification.type === 'warning'}
 		>
-			<span>{message}</span>
+			<p class="text-md text-center text-white">{notification.message}</p>
 		</div>
-	</div>
-{/if}
+	{/each}
+</div>

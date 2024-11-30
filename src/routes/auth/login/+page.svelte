@@ -1,8 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { ArrowLeft } from 'lucide-svelte';
 	import AuthToggle from '$lib/components/auth/AuthToggle.svelte';
 	import FormInput from '$lib/components/auth/FormInput.svelte';
+	import { persisted } from '$lib/stores/persisted';
+	import { goto } from '$app/navigation';
+
+	// Create a persistent store using localStorage
+	export const isAuthenticated = persisted('isAuthenticated', false);
 
 	let isLogin = true;
 	let email = '';
@@ -12,10 +16,10 @@
 
 	function handleSubmit() {
 		if (!isLogin && password !== passwordConfirm) {
-			// Handle password mismatch error
 			return;
 		}
-		// Handle form submission
+		isAuthenticated.set(true);
+		goto('/app/feed');
 	}
 
 	function handleToggle() {
@@ -74,6 +78,7 @@
 		<button
 			type="submit"
 			class="w-full rounded-xl bg-primary py-4 font-medium text-white transition-colors hover:bg-primary/90"
+			on:click={handleSubmit}
 		>
 			{isLogin ? 'Войти' : 'Зарегистрироваться'}
 		</button>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { fade } from 'svelte/transition';
+	import Toast from '$lib/components/Toast.svelte';
 	let { children } = $props();
 </script>
 
@@ -19,3 +20,5 @@
 		padding: 0;
 	}
 </style>
+
+<Toast />
