@@ -93,7 +93,7 @@
 									<p class="mt-1 text-sm text-deactivated">{message.event.description}</p>
 									<button
 										class="mt-3 w-full rounded-full border-2 border-secondary px-4 py-2 text-sm font-semibold"
-										on:click={() => goto('/app/feed/event/6')}
+										on:click={() => goto('/app/feed/event/10')}
 									>
 										{message.event.actionText}
 									</button>

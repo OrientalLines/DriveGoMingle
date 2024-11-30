@@ -73,6 +73,17 @@ export const load = ({ status }: { status: EventStatus | undefined }) => {
 			participants: 8,
 			participantsLimit: 15,
 			type: EventType.PUBLIC
+		},
+		{
+			id: 10,
+			title: 'Stance & Fitment',
+			status: EventStatus.PLANNED,
+			participants: 8,
+			participantsLimit: 15,
+			description: 'Встреча любителей stance-культуры. Обсуждение настроек подвески и фитмента',
+			date: 'Apr 8, 9:00AM',
+			location: 'Underground Parking',
+			private: true
 		}
-	].filter((item) => status === undefined ? true : item.status === status);
+	].filter((item) => (status === undefined ? true : item.status === status));
 };

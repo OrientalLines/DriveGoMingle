@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Calendar, Map, MessageCircle } from 'lucide-svelte';
+	import { Calendar, Map, MessageCircle, Lock } from 'lucide-svelte';
 	import { fade } from 'svelte/transition';
-	import Toast from '$lib/components/Toast.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 
 	// Replace mock data with actual data from page store
@@ -45,7 +44,6 @@
 	}
 </script>
 
-<Toast message="Вы успешно присоединились к мероприятию!" visible={showToast} />
 <div
 	class="min-h-screen space-y-8 text-white"
 	in:fade={{ duration: 200 }}
@@ -151,6 +149,17 @@
 						<p class="text-light-green">{event.location}</p>
 					</div>
 				</div>
+				{#if event.private}
+					<div class="flex items-center gap-4 rounded-lg bg-background-secondary/50 p-4">
+						<div class="rounded-xl bg-red-500/20 p-3">
+							<Lock class="h-6 w-6 text-red-400" />
+						</div>
+						<div>
+							<h3 class="text-lg font-semibold">Приватное мероприятие</h3>
+							<p class="text-deactivated">Доступно только для приглашенных участников.</p>
+						</div>
+					</div>
+				{/if}
 			{/if}
 		{:else}
 			<!-- Participants tab content -->

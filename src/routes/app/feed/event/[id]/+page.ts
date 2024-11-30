@@ -11,7 +11,8 @@ export const load = ({ params }) => {
 			participantsLimit: 15,
 			description: 'Cool meetup description',
 			date: 'Mar 20, 4:30PM',
-			location: 'Sample Location 1'
+			location: 'Sample Location 1',
+			private: false
 		},
 		{
 			id: 2,
@@ -21,7 +22,8 @@ export const load = ({ params }) => {
 			participantsLimit: 20,
 			description: 'Ferrari meet description',
 			date: 'Mar 22, 2:00PM',
-			location: 'Sample Location 2'
+			location: 'Sample Location 2',
+			private: false
 		},
 		{
 			id: 3,
@@ -31,7 +33,8 @@ export const load = ({ params }) => {
 			participantsLimit: 1000,
 			description: 'Big beach party with music and food',
 			date: 'Apr 15, 12:00PM',
-			location: 'Beach Resort'
+			location: 'Beach Resort',
+			private: false
 		},
 		{
 			id: 4,
@@ -41,7 +44,8 @@ export const load = ({ params }) => {
 			participantsLimit: 50,
 			description: 'Rust programming workshop in nature',
 			date: 'Apr 1, 10:00AM',
-			location: 'Nature Park'
+			location: 'Nature Park',
+			private: false
 		},
 		{
 			id: 5,
@@ -51,7 +55,8 @@ export const load = ({ params }) => {
 			participantsLimit: 20,
 			description: 'Casual evening networking event',
 			date: 'Mar 25, 6:00PM',
-			location: 'Downtown Cafe'
+			location: 'Downtown Cafe',
+			private: false
 		},
 		{
 			id: 6,
@@ -61,7 +66,8 @@ export const load = ({ params }) => {
 			participantsLimit: 30,
 			description: 'Встреча владельцев японских автомобилей. Особое внимание Skyline, Supra, Silvia',
 			date: 'Apr 5, 11:00AM',
-			location: 'Парковка ТРЦ Мега'
+			location: 'Парковка ТРЦ Мега',
+			private: false
 		},
 		{
 			id: 7,
@@ -71,7 +77,8 @@ export const load = ({ params }) => {
 			participantsLimit: 40,
 			description: 'Выставка классических немецких автомобилей. BMW, Mercedes, Porsche',
 			date: 'Mar 15, 7:00PM',
-			location: 'Исторический центр'
+			location: 'Исторический центр',
+			private: false
 		},
 		{
 			id: 8,
@@ -81,7 +88,8 @@ export const load = ({ params }) => {
 			participantsLimit: 16,
 			description: 'Ночная дрифт-сессия на закрытой трассе. Только для опытных водителей',
 			date: 'Mar 23, 6:30PM',
-			location: 'Автодром'
+			location: 'Автодром',
+			private: false
 		},
 		{
 			id: 9,
@@ -91,8 +99,21 @@ export const load = ({ params }) => {
 			participantsLimit: 15,
 			description: 'Встреча любителей stance-культуры. Обсуждение настроек подвески и фитмента',
 			date: 'Apr 8, 9:00AM',
-			location: 'Underground Parking'
+			location: 'Underground Parking',
+			private: false
+		},
+		{
+			id: 10,
+			title: 'Stance & Fitment',
+			status: EventStatus.PLANNED,
+			participants: 8,
+			participantsLimit: 15,
+			description: 'Встреча любителей stance-культуры. Обсуждение настроек подвески и фитмента',
+			date: 'Apr 8, 9:00AM',
+			location: 'Underground Parking',
+			private: true
 		}
+
 	];
 
 	const event = items.find((item) => item.id === parseInt(params.id));

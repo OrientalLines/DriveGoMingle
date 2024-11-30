@@ -99,7 +99,7 @@
 				</div>
 			{/each}
 		{:else}
-			{#each items as item}
+			{#each items.filter((item) => !item.private) as item}
 				<div
 					role="button"
 					tabindex="0"
