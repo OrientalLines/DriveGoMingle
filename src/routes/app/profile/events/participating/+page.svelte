@@ -206,7 +206,8 @@
 				</div>
 
 				{#each days as { day, current, event }}
-					<div
+					<button
+						type="button"
 						class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold hover:bg-gray-800 md:h-12 md:w-12
             md:text-base
             {!current ? 'text-gray-600' : ''}
@@ -217,9 +218,11 @@
 							? 'bg-blue-500'
 							: ''}
             {event ? getEventStatusColor(event.status) : ''}"
+						on:click={() => event && goto(`/app/profile/events/${event.id}`)}
+						disabled={!event}
 					>
 						{day}
-					</div>
+					</button>
 				{/each}
 			</div>
 

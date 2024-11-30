@@ -2,13 +2,12 @@
 	import {
 		Calendar,
 		ExternalLink,
+		Frown,
 		ImagePlus,
 		Link2,
 		MapPin,
 		MessageCircle,
-		MoreVertical,
 		Pencil,
-		RemoveFormatting,
 		Share2,
 		Users,
 		UserX
@@ -201,20 +200,20 @@
 			<div class="flex flex-col gap-4 rounded-xl bg-background-secondary/50 p-4 shadow-lg">
 				<h3 class="mb-2 text-xl font-semibold text-white/90">Детали мероприятия</h3>
 				<div class="flex flex-col gap-3">
-					<div class="flex items-center gap-3">
+					<div class="flex items-center gap-2">
 						<div
 							class="flex h-10 w-10 items-center justify-center rounded-full bg-light-green/30 transition-all duration-300 hover:bg-light-green/40"
 						>
 							<MapPin class="h-5 w-5 text-light-green" />
 						</div>
-						<div class="flex flex-col">
-							<span class="text-xs font-medium text-white/60">Место проведения</span>
+						<div class="flex flex-col pl-1">
+							<span class="text-xs font-medium uppercase tracking-wide text-white/60">Место проведения</span>
 							<button
-								class="cursor-pointer text-sm text-white hover:underline"
+								class="group text-sm text-white transition-colors hover:text-light-green"
 								on:click={() => openLocation(event?.location || '')}
 							>
-								{event?.location || 'Место не указано'}
-								<ExternalLink class="h-3.5 w-3.5 text-white/60" />
+								<span class="line-clamp-1">{event?.location || 'Место не указано'}</span>
+								<ExternalLink class="h-3.5 w-3.5 text-light-green" />
 							</button>
 						</div>
 					</div>
@@ -458,11 +457,19 @@
 							<button class="text-deactivated hover:text-white">
 								<MessageCircle class="h-5 w-5" />
 							</button>
+							{#if event?.status === EventStatus.IN_PROGRESS || event?.status === EventStatus.COMPLETED}
+								<button
+									class="text-yellow-400 hover:text-yellow-300"
+									on:click={() =>
+										goto(`/app/profile/events/${event.id}/report?user=${participant.id}`)}
+								>
+									<Frown class="h-5 w-5" />
+								</button>
+							{/if}
 							{#if event?.authorUsername === user}
 								<button
 									class="text-red-400 hover:text-red-300"
 									on:click={() => {
-										// Remove user from the list
 										dummyParticipants = dummyParticipants.filter((p) => p.id !== participant.id);
 										toast.show({
 											message: `${participant.name} удален из мероприятия`,

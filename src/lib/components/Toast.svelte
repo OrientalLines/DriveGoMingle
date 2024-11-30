@@ -13,7 +13,7 @@
 			class:bg-blue-500={notification.type === 'info'}
 			class:bg-yellow-500={notification.type === 'warning'}
 		>
-			<p class="text-md text-center text-white">{notification.message}</p>
+			<p class="text-md text-center font-semibold text-white">{notification.message}</p>
 		</div>
 	{/each}
 </div>

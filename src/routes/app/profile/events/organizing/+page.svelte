@@ -139,9 +139,9 @@
 	{#if view === 'list'}
 		<!-- Events Grid -->
 		<div class="grid grid-cols-2 gap-4">
-			{#each organizingEvents.sort((a, b) => (a.status === EventStatus.COMPLETED ? 1 : -1)) as event}
+			{#each organizingEvents.sort( (a, b) => (a.status === EventStatus.COMPLETED ? 1 : -1) ) as event}
 				<button class="text-left" on:click={() => goto(`/app/profile/events/${event.id}`)}>
-					<EventCard event={event} />
+					<EventCard {event} />
 				</button>
 			{/each}
 		</div>
@@ -205,7 +205,8 @@
 				</div>
 
 				{#each days as { day, current, event }}
-					<div
+					<button
+						type="button"
 						class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold hover:bg-gray-800 md:h-12 md:w-12
             md:text-base
             {!current ? 'text-gray-600' : ''}
@@ -217,11 +218,10 @@
 							: ''}
             {event ? getEventStatusColor(event.status) : ''}"
 						on:click={() => event && goto(`/app/profile/events/${event.id}`)}
-						role="button"
-						class:cursor-pointer={event}
+						disabled={!event}
 					>
 						{day}
-					</div>
+					</button>
 				{/each}
 			</div>
 
