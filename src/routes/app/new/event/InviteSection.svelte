@@ -20,7 +20,7 @@
 			<input
 				type="text"
 				bind:value={searchQuery}
-				placeholder="Name"
+				placeholder="Поиск по именам"
 				class="w-full rounded-lg border-2 border-deactivated bg-background-secondary/50 px-4 py-2.5 text-white placeholder:text-deactivated"
 			/>
 			{#if searchQuery}

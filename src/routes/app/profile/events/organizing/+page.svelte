@@ -216,6 +216,9 @@
 							? 'bg-blue-500'
 							: ''}
             {event ? getEventStatusColor(event.status) : ''}"
+						on:click={() => event && goto(`/app/profile/events/${event.id}`)}
+						role="button"
+						class:cursor-pointer={event}
 					>
 						{day}
 					</div>

@@ -42,6 +42,7 @@
 		<h1 class="text-center text-2xl font-semibold">Чаты</h1>
 		<button
 			class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-deactivated"
+			on:click={() => goto(`/app/new/chat`)}
 		>
 			<Plus class="h-7 w-7 stroke-[1.5px] text-white sm:h-8 sm:w-8" />
 		</button>

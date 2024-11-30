@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MessageSquare, Plus, UserRound } from 'lucide-svelte';
+	import { Clock, MessageSquare, Plus, UserRound, Users } from 'lucide-svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { Newspaper } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
@@ -20,12 +20,12 @@
 		{
 			label: 'Создать мероприятие',
 			action: () => goto('/app/new/event', { replaceState: true }),
-			icon: '⌚' // You might want to replace this with a proper icon component
+			icon: Clock // Using Clock icon from lucide for event
 		},
 		{
 			label: 'Создать группу',
-			action: () => goto('/app/new/chat', { replaceState: true }),
-			icon: '👥' // You might want to replace this with a proper icon component
+			action: () => goto('/app/new/chat', { replaceState: true }), 
+			icon: Users // Using Users icon from lucide for group
 		}
 	];
 
@@ -115,7 +115,7 @@
 					}}
 					class="flex w-full items-center gap-3 px-6 py-4 text-left text-white transition-colors active:bg-white/20 {index === 0 ? 'rounded-t-3xl' : ''}"
 				>
-					<span class="text-2xl">{option.icon}</span>
+					<svelte:component this={option.icon} class="h-6 w-6" />
 					<span class="text-base font-medium tracking-wide">{option.label}</span>
 				</button>
 				{#if index !== createOptions.length - 1}
