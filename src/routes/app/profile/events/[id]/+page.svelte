@@ -38,6 +38,9 @@
 
 	let currentPhotoIndex = 0;
 
+	let touchStartX = 0;
+	let touchEndX = 0;
+
 	function getInitials(name: string) {
 		return name
 			.split(' ')
@@ -91,6 +94,24 @@
 	function prevPhoto() {
 		if (currentPhotoIndex > 0) {
 			currentPhotoIndex--;
+		}
+	}
+
+	function handleTouchStart(event: TouchEvent) {
+		touchStartX = event.touches[0].clientX;
+	}
+
+	function handleTouchMove(event: TouchEvent) {
+		touchEndX = event.touches[0].clientX;
+	}
+
+	function handleTouchEnd() {
+		if (touchStartX - touchEndX > 50) {
+			// Swipe left
+			nextPhoto();
+		} else if (touchEndX - touchStartX > 50) {
+			// Swipe right
+			prevPhoto();
 		}
 	}
 </script>
@@ -300,7 +321,12 @@
 
 			<!-- Photos Carousel -->
 			<div class="space-y-4 rounded-xl bg-background-secondary/50 p-4">
-				<div class="relative">
+				<div
+					class="relative"
+					on:touchstart={handleTouchStart}
+					on:touchmove={handleTouchMove}
+					on:touchend={handleTouchEnd}
+				>
 					{#if event?.photos?.length}
 						<div class="aspect-[16/10] w-full">
 							<img
