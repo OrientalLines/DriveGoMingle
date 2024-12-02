@@ -39,7 +39,11 @@
 	let currentPhotoIndex = 0;
 
 	let touchStartX = 0;
-	let touchEndX = 0;
+	let touchStartY = 0;
+	let isSwiping = false;
+	const swipeThreshold = 50;
+	const swipeTimeThreshold = 300;
+	let touchStartTime = 0;
 
 	function getInitials(name: string) {
 		return name
@@ -99,20 +103,69 @@
 
 	function handleTouchStart(event: TouchEvent) {
 		touchStartX = event.touches[0].clientX;
+		touchStartY = event.touches[0].pageY;
+		touchStartTime = Date.now();
+		isSwiping = false;
 	}
 
 	function handleTouchMove(event: TouchEvent) {
-		touchEndX = event.touches[0].clientX;
+		if (!touchStartX) return;
+
+		const touchCurrentX = event.touches[0].clientX;
+		const touchCurrentY = event.touches[0].pageY;
+		const deltaX = touchStartX - touchCurrentX;
+		const deltaY = Math.abs(touchStartY - touchCurrentY);
+
+		// If vertical scrolling is detected, ignore the swipe
+		if (deltaY > Math.abs(deltaX)) {
+			touchStartX = 0;
+			isSwiping = false;
+			return;
+		}
+
+		// Start swiping only if horizontal movement is significant
+		if (Math.abs(deltaX) > 10) {
+			isSwiping = true;
+			event.preventDefault();
+		}
 	}
 
-	function handleTouchEnd() {
-		if (touchStartX - touchEndX > 50) {
-			// Swipe left
-			nextPhoto();
-		} else if (touchEndX - touchStartX > 50) {
-			// Swipe right
-			prevPhoto();
+	function handleTouchEnd(e: TouchEvent) {
+		if (!touchStartX || !isSwiping) return;
+
+		const touchEndX = e.changedTouches[0].clientX;
+		const deltaX = touchStartX - touchEndX;
+		const touchDuration = Date.now() - touchStartTime;
+
+		// Only process swipe if:
+		// 1. The swipe distance is greater than threshold
+		// 2. The swipe duration is less than timeThreshold
+		// 3. We're actually in a swiping state
+		if (Math.abs(deltaX) > swipeThreshold && 
+			touchDuration < swipeTimeThreshold && 
+			isSwiping) {
+			if (deltaX > 0) {
+				// Swipe left (next)
+				if (event?.photos && currentPhotoIndex < event.photos.length - 1) {
+					nextPhoto();
+				}
+			} else {
+				// Swipe right (previous)
+				if (currentPhotoIndex > 0) {
+					prevPhoto();
+				}
+			}
 		}
+
+		// Reset touch tracking
+		touchStartX = 0;
+		isSwiping = false;
+	}
+
+	// Add cleanup for touch events
+	function handleTouchCancel() {
+		touchStartX = 0;
+		isSwiping = false;
 	}
 </script>
 
@@ -321,18 +374,20 @@
 
 			<!-- Photos Carousel -->
 			<div class="space-y-4 rounded-xl bg-background-secondary/50 p-4">
-				<div
-					class="relative"
+				<div 
+					class="relative touch-pan-x"
 					on:touchstart={handleTouchStart}
 					on:touchmove={handleTouchMove}
 					on:touchend={handleTouchEnd}
+					on:touchcancel={handleTouchCancel}
 				>
 					{#if event?.photos?.length}
 						<div class="aspect-[16/10] w-full">
 							<img
 								src={event.photos[currentPhotoIndex]}
-								alt="Event photo {currentPhotoIndex + 1}"
-								class="h-full w-full rounded-xl object-cover"
+									alt="Event photo {currentPhotoIndex + 1}"
+									class="h-full w-full rounded-xl object-cover"
+									draggable="false"
 							/>
 						</div>
 
