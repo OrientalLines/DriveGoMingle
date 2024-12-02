@@ -6,6 +6,7 @@
 		ImagePlus,
 		Link2,
 		MapPin,
+		MapPinned,
 		MessageCircle,
 		Pencil,
 		Share2,
@@ -36,6 +37,8 @@
 		{ id: 2, name: 'Мария Иванова', avatar: '' },
 		{ id: 3, name: 'Дмитрий Сидоров', avatar: '' }
 	];
+
+	let currentPhotoIndex = 0;
 
 	function getInitials(name: string) {
 		return name
@@ -78,6 +81,18 @@
 				type: 'success'
 			});
 			history.back();
+		}
+	}
+
+	function nextPhoto() {
+		if (event?.photos && currentPhotoIndex < event.photos.length - 1) {
+			currentPhotoIndex++;
+		}
+	}
+
+	function prevPhoto() {
+		if (currentPhotoIndex > 0) {
+			currentPhotoIndex--;
 		}
 	}
 </script>
@@ -199,21 +214,28 @@
 			<!-- Event Details -->
 			<div class="flex flex-col gap-4 rounded-xl bg-background-secondary/50 p-4 shadow-lg">
 				<h3 class="mb-2 text-xl font-semibold text-white/90">Детали мероприятия</h3>
-				<div class="flex flex-col gap-3">
-					<div class="flex items-center gap-2">
+				<div class="flex flex-col gap-4">
+					<div class="flex items-start gap-3">
 						<div
-							class="flex h-10 w-10 items-center justify-center rounded-full bg-light-green/30 transition-all duration-300 hover:bg-light-green/40"
+							class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-light-green/30 transition-all duration-300 hover:bg-light-green/40"
 						>
-							<MapPin class="h-5 w-5 text-light-green" />
+							<MapPinned class="h-5 w-5 text-light-green" />
 						</div>
-						<div class="flex flex-col pl-1">
-							<span class="text-xs font-medium uppercase tracking-wide text-white/60">Место проведения</span>
+						<div class="flex flex-grow flex-col">
+							<span class="text-xs font-medium uppercase tracking-wide text-white/60"
+								>Место проведения</span
+							>
 							<button
-								class="group text-sm text-white transition-colors hover:text-light-green"
+								class="group mt-1 flex w-full flex-col items-start justify-between text-sm text-white transition-colors hover:text-light-green sm:flex-row sm:items-center"
 								on:click={() => openLocation(event?.location || '')}
 							>
-								<span class="line-clamp-1">{event?.location || 'Место не указано'}</span>
-								<ExternalLink class="h-3.5 w-3.5 text-light-green" />
+								<span class="mb-1 line-clamp-2 sm:mb-0 sm:mr-2 sm:line-clamp-1"
+									>{event?.location || 'Место не указано'}</span
+								>
+								<span
+									class="whitespace-nowrap rounded-full bg-light-green/20 px-2 py-1 text-xs text-light-green"
+									>Открыть карту</span
+								>
 							</button>
 						</div>
 					</div>
@@ -280,28 +302,87 @@
 
 			<!-- Photos Carousel -->
 			<div class="space-y-4 rounded-xl bg-background-secondary/50 p-4">
-				<div class="overflow-x-auto">
-					<div class="flex gap-2">
-						{#if event?.photos?.length}
-							{#each event.photos.slice(0, 3) as photo, i}
-								<div class="aspect-[16/10] w-full flex-shrink-0">
-									<img
-										src={photo}
-										alt="Event photo {i + 1}"
-										class="h-full w-full rounded-xl object-cover"
-									/>
-								</div>
-							{/each}
-						{:else}
-							<div class="aspect-[16/10] w-full flex-shrink-0">
-								<div
-									class="flex h-full w-full items-center justify-center rounded-xl bg-background-secondary"
+				<div class="relative">
+					{#if event?.photos?.length}
+						<div class="aspect-[16/10] w-full">
+							<img
+								src={event.photos[currentPhotoIndex]}
+								alt="Event photo {currentPhotoIndex + 1}"
+								class="h-full w-full rounded-xl object-cover"
+							/>
+						</div>
+
+						<!-- Navigation buttons -->
+						<div class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4">
+							<button
+								class="rounded-full bg-black/50 p-1 text-white backdrop-blur-sm transition-colors hover:bg-black/70 disabled:cursor-not-allowed disabled:opacity-50"
+								on:click={prevPhoto}
+								disabled={currentPhotoIndex === 0}
+								aria-label="Предыдущая фотография"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
 								>
-									<span class="text-deactivated">No photos</span>
-								</div>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M15 19l-7-7 7-7"
+									/>
+								</svg>
+							</button>
+
+							<button
+								class="rounded-full bg-black/50 p-1 text-white backdrop-blur-sm transition-colors hover:bg-black/70 disabled:cursor-not-allowed disabled:opacity-50"
+								on:click={nextPhoto}
+								disabled={!event?.photos || currentPhotoIndex === event.photos.length - 1}
+								aria-label="Следующая фотография"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M9 5l7 7-7 7"
+									/>
+								</svg>
+							</button>
+						</div>
+
+						<!-- Pagination dots -->
+						<div class="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">
+							{#each event.photos as _, i}
+								<div
+									class="h-1.5 w-1.5 rounded-full transition-colors duration-200 {i ===
+									currentPhotoIndex
+										? 'bg-white'
+										: 'bg-white/40'}"
+									role="button"
+									on:click={() => (currentPhotoIndex = i)}
+									on:keydown={(e) => e.key === 'Enter' && (currentPhotoIndex = i)}
+									tabindex="0"
+								></div>
+							{/each}
+						</div>
+					{:else}
+						<div class="aspect-[16/10] w-full">
+							<div
+								class="flex h-full w-full items-center justify-center rounded-xl bg-background-secondary"
+							>
+								<span class="text-deactivated">No photos</span>
 							</div>
-						{/if}
-					</div>
+						</div>
+					{/if}
 				</div>
 				<label
 					for="photo-upload"

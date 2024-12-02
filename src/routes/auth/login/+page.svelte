@@ -4,6 +4,7 @@
 	import FormInput from '$lib/components/auth/FormInput.svelte';
 	import { persisted } from '$lib/stores/persisted';
 	import { goto } from '$app/navigation';
+	import { toast } from '$lib/stores/toast';
 
 	// Create a persistent store using localStorage
 	export const isAuthenticated = persisted('isAuthenticated', false);
@@ -14,12 +15,28 @@
 	let passwordConfirm = '';
 	let name = '';
 
-	function handleSubmit() {
+	let isSubmitting = false;
+
+	async function handleSubmit() {
+		if (isSubmitting) return;
+		isSubmitting = true;
+
 		if (!isLogin && password !== passwordConfirm) {
+			isSubmitting = false;
 			return;
 		}
-		isAuthenticated.set(true);
-		goto('/app/feed');
+
+		if (email.includes('@') && password.length > 0) {
+			isAuthenticated.set(true);
+			await goto('/app/feed');
+		} else {
+			toast.show({
+				message: 'Неверный email или пароль',
+				type: 'error'
+			});
+		}
+
+		isSubmitting = false;
 	}
 
 	function handleToggle() {
@@ -74,11 +91,10 @@
 				placeholder="••••••••"
 			/>
 		{/if}
-
 		<button
 			type="submit"
 			class="w-full rounded-xl bg-primary py-4 font-medium text-white transition-colors hover:bg-primary/90"
-			on:click={handleSubmit}
+			disabled={isSubmitting}
 		>
 			{isLogin ? 'Войти' : 'Зарегистрироваться'}
 		</button>
