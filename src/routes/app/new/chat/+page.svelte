@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import Toast from '$lib/components/Toast.svelte';
 
 	let chatData = {
 		title: '',

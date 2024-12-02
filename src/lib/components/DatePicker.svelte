@@ -112,7 +112,7 @@
 		class="text-md relative w-full rounded-lg border-2 border-deactivated bg-background-secondary/50 px-4 py-2 text-left text-white focus:ring-2 focus:ring-primary"
 		on:click={() => (showCalendar = !showCalendar)}
 	>
-		<div class="flex items-center gap-2">
+		<div class="flex px-2 py-1 items-center gap-2">
 			<Calendar size={20} class="text-primary" />
 			<span>
 				{selectedDate

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import { Info, Paperclip, Phone } from 'lucide-svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { goto } from '$app/navigation';

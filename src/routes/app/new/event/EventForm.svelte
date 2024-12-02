@@ -5,7 +5,7 @@
 		title: '',
 		date: '',
 		time: '',
-		address: '',
+		location: '',
 		description: '',
 		isPublic: true,
 		participantsLimit: 100
@@ -17,7 +17,7 @@
 		title: '',
 		date: '',
 		time: '',
-		address: '',
+		location: '',
 		description: ''
 	};
 
@@ -28,7 +28,7 @@
 			title: '',
 			date: '',
 			time: '',
-			address: '',
+			location: '',
 			description: ''
 		};
 
@@ -47,8 +47,8 @@
 			isValid = false;
 		}
 
-		if (!eventData.address?.trim()) {
-			errors.address = 'Адрес обязателен';
+		if (!eventData.location?.trim()) {
+			errors.location = 'Адрес обязателен';
 			isValid = false;
 		}
 
@@ -116,16 +116,16 @@
 				<label for="address" class="text-lg font-medium text-white/90">Адрес</label>
 				<textarea
 					id="address"
-					bind:value={eventData.address}
+					bind:value={eventData.location}
 					placeholder="Укажите адрес проведения"
 					required
-					class="text-md w-full rounded-lg border-2 {errors.address
+					class="text-md w-full rounded-lg border-2 {errors.location
 						? 'border-red-500'
 						: 'border-deactivated'} bg-background-secondary/50 px-4 py-2.5 text-white placeholder:text-deactivated"
 					rows="2"
 				></textarea>
-				{#if errors.address}
-					<p class="text-sm text-red-500">{errors.address}</p>
+				{#if errors.location}
+					<p class="text-sm text-red-500">{errors.location}</p>
 				{/if}
 			</div>
 

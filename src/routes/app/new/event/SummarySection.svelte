@@ -1,9 +1,6 @@
 <script lang="ts">
 	import BackButton from '$lib/components/BackButton.svelte';
 	import { Calendar, MapPin, Users } from 'lucide-svelte';
-	import { goto, pushState } from '$app/navigation';
-	import { addEvent } from '$lib/stores/events';
-	import { EventType } from '$lib/types';
 
 	export let eventData: any;
 	export let users: any;
@@ -20,19 +17,7 @@
 	}
 
 	async function handleSubmit() {
-		const newEventId = addEvent({
-			title: eventData.title,
-			description: eventData.description,
-			location: eventData.address,
-			date: eventData.date,
-			time: eventData.time,
-			type: eventData.isPublic ? EventType.PUBLIC : EventType.PRIVATE,
-			participantsLimit: 100,
-			photos: []
-		});
 
-		// I FUCKING HATE THIS STUPID FUCKING SVELTE
-		goto(`/app/profile/events/${newEventId}`);
 	}
 </script>
 
