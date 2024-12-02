@@ -49,7 +49,7 @@
 </script>
 
 <div
-	class="space-y-8 text-white h-[calc(100vh-72px)]"
+	class="h-[calc(100vh-72px)] space-y-8 text-white"
 	in:fade={{ duration: 200 }}
 	out:fade={{ duration: 300 }}
 >

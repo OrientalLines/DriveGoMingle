@@ -95,7 +95,7 @@
 							<div class="h-7 w-24 rounded-full bg-gray-700"></div>
 						</div>
 					</div>
-					<div class="h-1.5 overflow-hidden rounded-full bg-gray-700"></div>	
+					<div class="h-1.5 overflow-hidden rounded-full bg-gray-700"></div>
 				</div>
 			{/each}
 		{:else}
@@ -103,7 +103,7 @@
 				<div
 					role="button"
 					tabindex="0"
-					class="block rounded-lg bg-background-secondary/50 p-4 transition-all hover:bg-background-secondary/70 cursor-pointer"
+					class="block cursor-pointer rounded-lg bg-background-secondary/50 p-4 transition-all hover:bg-background-secondary/70"
 					on:click={() => handleEventClick(item.id.toString())}
 					on:keydown={(e) => e.key === 'Enter' && handleEventClick(item.id.toString())}
 				>

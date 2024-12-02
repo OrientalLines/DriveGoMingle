@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 
-	let { open = false, title, description, onclose, children } = $props<{
+	let {
+		open = false,
+		title,
+		description,
+		onclose,
+		children
+	} = $props<{
 		open?: boolean;
 		title: string;
 		description?: string;

@@ -1,4 +1,4 @@
-import { EventStatus } from "$lib/types";
+import { EventStatus } from '$lib/types';
 
 export const load = ({ params }) => {
 	// For now, using mock data - replace with actual API call later
@@ -64,7 +64,8 @@ export const load = ({ params }) => {
 			status: EventStatus.PLANNED,
 			participants: 25,
 			participantsLimit: 30,
-			description: 'Встреча владельцев японских автомобилей. Особое внимание Skyline, Supra, Silvia',
+			description:
+				'Встреча владельцев японских автомобилей. Особое внимание Skyline, Supra, Silvia',
 			date: 'Apr 5, 11:00AM',
 			location: 'Парковка ТРЦ Мега',
 			private: false
@@ -113,7 +114,6 @@ export const load = ({ params }) => {
 			location: 'Underground Parking',
 			private: true
 		}
-
 	];
 
 	const event = items.find((item) => item.id === parseInt(params.id));

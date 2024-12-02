@@ -52,7 +52,8 @@
 
 <style>
 	/* Ensure main content and navbar have a lower z-index than the popup */
-	:global(main), :global(nav) {
+	:global(main),
+	:global(nav) {
 		z-index: 10;
 	}
 </style>

@@ -11,7 +11,7 @@
 
 	onMount(() => {
 		// Subscribe to authentication state
-		isAuthenticated.subscribe(value => {
+		isAuthenticated.subscribe((value) => {
 			if (value) {
 				handleNavigation('/app');
 			}

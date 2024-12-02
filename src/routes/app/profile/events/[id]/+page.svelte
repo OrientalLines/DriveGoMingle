@@ -1,11 +1,9 @@
 <script lang="ts">
 	import {
 		Calendar,
-		ExternalLink,
 		Frown,
 		ImagePlus,
 		Link2,
-		MapPin,
 		MapPinned,
 		MessageCircle,
 		Pencil,

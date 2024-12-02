@@ -13,6 +13,8 @@
 	{/key}
 </div>
 
+<Toast />
+
 <style>
 	/* Optional: Ensure the gradient covers the full viewport */
 	:global(body) {
@@ -20,5 +22,3 @@
 		padding: 0;
 	}
 </style>
-
-<Toast />

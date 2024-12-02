@@ -6,7 +6,7 @@
 	import SummarySection from './SummarySection.svelte';
 
 	let eventData = {
-		title: '',	
+		title: '',
 		date: '',
 		time: '',
 		address: '',
@@ -18,7 +18,7 @@
 	let users = [
 		{ id: 1, name: 'Ryan Gosling', status: 'The coolest driver', selected: false },
 		{ id: 2, name: 'Bob Gooal', status: 'Dynamic Security Technician', selected: false },
-		{ id: 3, name: 'Alt Girl', status: 'The real one from gosuslugi', selected: false },
+		{ id: 3, name: 'Alt Girl', status: 'The real one from gosuslugi', selected: false }
 	];
 
 	let showInviteSection = false;
@@ -43,12 +43,9 @@
 {:else if showInviteSection}
 	<InviteSection
 		{users}
-		onBack={() => showInviteSection = false}
-		onNext={() => showSummarySection = true}
+		onBack={() => (showInviteSection = false)}
+		onNext={() => (showSummarySection = true)}
 	/>
 {:else}
-	<EventForm
-		eventData={eventData}
-		onNext={() => showInviteSection = true}
-	/>
+	<EventForm {eventData} onNext={() => (showInviteSection = true)} />
 {/if}

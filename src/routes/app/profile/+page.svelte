@@ -108,7 +108,7 @@
 			<div class="my-5 grid grid-cols-2 gap-4">
 				{#each organizing.slice(0, 2) as event}
 					<button class="text-left" on:click={() => goto(`profile/events/${event.id}`)}>
-						<EventCard event={event} />
+						<EventCard {event} />
 					</button>
 				{/each}
 			</div>
@@ -127,7 +127,7 @@
 			<div class="my-5 grid grid-cols-2 gap-4">
 				{#each participating.slice(0, 2) as event}
 					<button class="text-left" on:click={() => goto(`profile/events/${event.id}`)}>
-						<EventCard event={event} />
+						<EventCard {event} />
 					</button>
 				{/each}
 			</div>

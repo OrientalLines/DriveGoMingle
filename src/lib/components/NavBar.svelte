@@ -24,7 +24,7 @@
 		},
 		{
 			label: 'Создать группу',
-			action: () => goto('/app/new/chat', { replaceState: true }), 
+			action: () => goto('/app/new/chat', { replaceState: true }),
 			icon: Users // Using Users icon from lucide for group
 		}
 	];
@@ -103,7 +103,7 @@
 		out:fade={{ duration: 150 }}
 	>
 		<div
-			class="w-full max-h-[80vh] overflow-y-auto rounded-t-3xl bg-background-secondary shadow-lg"
+			class="max-h-[80vh] w-full overflow-y-auto rounded-t-3xl bg-background-secondary shadow-lg"
 			in:scale={{ duration: 200, start: 0.95, opacity: 0 }}
 			out:fade={{ duration: 150 }}
 		>
@@ -113,7 +113,10 @@
 						option.action();
 						showCreateMenu = false;
 					}}
-					class="flex w-full items-center gap-3 px-6 py-4 text-left text-white transition-colors active:bg-white/20 {index === 0 ? 'rounded-t-3xl' : ''}"
+					class="flex w-full items-center gap-3 px-6 py-4 text-left text-white transition-colors active:bg-white/20 {index ===
+					0
+						? 'rounded-t-3xl'
+						: ''}"
 				>
 					<svelte:component this={option.icon} class="h-6 w-6" />
 					<span class="text-base font-medium tracking-wide">{option.label}</span>

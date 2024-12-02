@@ -78,8 +78,6 @@
 	}
 </script>
 
-<Toast message="Чат успешно создан!" bind:visible={showToast} />
-
 <div class="space-y-8">
 	<header class="relative flex items-center justify-center">
 		<h1 class="text-2xl font-bold">Новый чат</h1>
